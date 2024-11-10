@@ -36,7 +36,17 @@
             </div>
             <div class="row">
                 <?php
-                    $result = select("SELECT * FROM rooms WHERE status= ?", [1], 'i');
+                    // Phan trang
+                    $rowsPerPage = 6;
+                    if (!isset($_GET['page']))
+                    {
+                        $_GET['page'] = 1;
+                    }
+                    //vị trí của mẩu tin đầu tiên trên mỗi trang
+                    $offset = ($_GET['page'] - 1) * $rowsPerPage;
+                    $sql = 'SELECT * FROM rooms WHERE status = 1 LIMIT '.$offset.','.$rowsPerPage;
+
+                    $result = mysqli_query($conn, $sql);
                     $path = ROOMS_IMG_PATH;
 
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -101,6 +111,7 @@
                         <a href="#">1</a>
                         <a href="#">2</a>
                         <a href="#">Next <i class="fa fa-long-arrow-right"></i></a>
+                        <a href="#"><i class="fa fa-long-arrow-left"></i> Previous </a>
                     </div>
                 </div>
             </div>
