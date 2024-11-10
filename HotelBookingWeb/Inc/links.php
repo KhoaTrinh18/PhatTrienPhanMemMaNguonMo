@@ -28,4 +28,27 @@
     .color{
         color: #aaaab3;
     }
+     .room-item {
+         display: flex;
+         flex-direction: column;
+         height: 100%;
+     }
+
+    .ri-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Giúp cân đối các phần tử trong phòng */
+        flex-grow: 1; /* Cho phép .ri-text giãn chiều cao */
+    }
+
+    .room-item .ri-text > h4,
+    .room-item .ri-text > h3 {
+        flex-shrink: 0; /* Đảm bảo phần tiêu đề không bị thu hẹp */
+        margin-bottom: 15px;
+    }
+
+    .room-item table {
+        flex-grow: 1; /* Cho phép bảng có chiều cao tự do */
+        margin-top: auto; /* Đảm bảo table ở phía dưới cùng */
+    }
 </style>

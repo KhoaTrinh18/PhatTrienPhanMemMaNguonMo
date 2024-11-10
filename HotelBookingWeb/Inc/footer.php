@@ -20,11 +20,9 @@
                         <h6>Link</h6>
                         <ul>
                             <li><a class="text-decoration-none color" href="./index.php">Home</a></li>
-                            <li><a class="text-decoration-none color" href="./rooms.html">Rooms</a></li>
-                            <li><a class="text-decoration-none color" href="./about-us.html">About Us</a></li>
-                            <li><a class="text-decoration-none color" href="./pages.html">Pages</a></li>
-                            <li><a class="text-decoration-none color" href="./blog.html">News</a></li>
-                            <li><a class="text-decoration-none color" href="./contact.html">Contact</a></li>
+                            <li><a class="text-decoration-none color" href="./rooms.php">Rooms</a></li>
+                            <li><a class="text-decoration-none color" href="./services.php">Services</a></li>
+                            <li><a class="text-decoration-none color" href="./contact.php">Contact</a></li>
                         </ul>
                     </div>
                 </div>

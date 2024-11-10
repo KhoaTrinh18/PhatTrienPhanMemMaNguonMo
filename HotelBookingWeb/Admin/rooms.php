@@ -63,43 +63,51 @@
                             } else if(!is_numeric($form_data['children'])){
                                 $_SESSION['error'] = "Children must be a number!";
                             } else {
-                                $query1 = "INSERT INTO `rooms`(`room_name`, `area`, `price`, `quantity`, `adult`, `children`, `description`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-                                $values = array($form_data['room_name'], $form_data['area'], $form_data['price'], $form_data['quantity'], $form_data['adult'], $form_data['children'], $form_data['description']);
-                                $result = insert($query1, $values, "siiiiis");
-                                $flag = 0;
-                                if($result){
-                                   $flag = 1;
-                                }
-                                $room_id = mysqli_insert_id($conn);
-                                $query2 = "INSERT INTO `rooms_services`(`room_id`, `service_id`) VALUES (?, ?)";
-                                if($stmt = mysqli_prepare($conn, $query2)){
-                                    foreach ($services as $service) {
-                                        mysqli_stmt_bind_param($stmt, "ii", $room_id, $service);
-                                        mysqli_stmt_execute($stmt);
-                                    }
-                                    mysqli_stmt_close($stmt);
-                                    $flag = 1;
+                                $img_r = uploadImage($_FILES['image'], ROOMS_FOLDER);
+                                if($img_r == 'inv_img'){
+                                    $_SESSION['error'] = "Image invalid!";
+                                } else if($img_r == 'inv_size'){
+                                    $_SESSION['error'] = "Image size invalid!";
+                                } else if($img_r == 'upl_failed'){
+                                    $_SESSION['error'] = "Upload image failed!";
                                 } else {
-                                    die("Query prepare failed - Insert");
+                                    $query1 = "INSERT INTO `rooms`(`room_name`, `area`, `price`, `quantity`, `adult`, `children`, `image`, `description`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                                    $values = array($form_data['room_name'], $form_data['area'], $form_data['price'], $form_data['quantity'], $form_data['adult'], $form_data['children'], $img_r, $form_data['description']);
+                                    $result = insert($query1, $values, "siiiiiss");
                                     $flag = 0;
-                                }
-
-                                $query3 = "INSERT INTO `rooms_features`(`room_id`, `feature_id`) VALUES (?, ?)";
-                                if($stmt = mysqli_prepare($conn, $query3)){
-                                    foreach ($features as $feature) {
-                                        mysqli_stmt_bind_param($stmt, "ii", $room_id, $feature);
-                                        mysqli_stmt_execute($stmt);
+                                    if($result){
+                                        $flag = 1;
                                     }
-                                    mysqli_stmt_close($stmt);
-                                    $flag = 1;
-                                } else {
-                                    die("Query prepare failed - Insert");
-                                    $flag = 0;
-                                }
-                                if($flag == 1){
-                                    $_SESSION['success'] = "Insert row successfully!";
-                                } else {
-                                    $_SESSION['error'] = "Something went wrong!";
+                                    $room_id = mysqli_insert_id($conn);
+                                    $query2 = "INSERT INTO `rooms_services`(`room_id`, `service_id`) VALUES (?, ?)";
+                                    if($stmt = mysqli_prepare($conn, $query2)){
+                                        foreach ($services as $service) {
+                                            mysqli_stmt_bind_param($stmt, "ii", $room_id, $service);
+                                            mysqli_stmt_execute($stmt);
+                                        }
+                                        mysqli_stmt_close($stmt);
+                                        $flag = 1;
+                                    } else {
+                                        die("Query prepare failed - Insert");
+                                        $flag = 0;
+                                    }
+                                    $query3 = "INSERT INTO `rooms_features`(`room_id`, `feature_id`) VALUES (?, ?)";
+                                    if($stmt = mysqli_prepare($conn, $query3)){
+                                        foreach ($features as $feature) {
+                                            mysqli_stmt_bind_param($stmt, "ii", $room_id, $feature);
+                                            mysqli_stmt_execute($stmt);
+                                        }
+                                        mysqli_stmt_close($stmt);
+                                        $flag = 1;
+                                    } else {
+                                        die("Query prepare failed - Insert");
+                                        $flag = 0;
+                                    }
+                                    if($flag == 1){
+                                        $_SESSION['success'] = "Insert row successfully!";
+                                    } else {
+                                        $_SESSION['error'] = "Something went wrong!";
+                                    }
                                 }
                             }
                         }
@@ -113,22 +121,36 @@
                             $query1 = "DELETE FROM rooms";
                             $query2 = "DELETE FROM rooms_features";
                             $query3 = "DELETE FROM rooms_services";
+                            $rooms = selectAll('rooms');
+                            $images = [];
+                            while($row = mysqli_fetch_assoc($rooms)){
+                                $images[] = $row['image'];
+                            }
                             if(mysqli_query($conn, $query2) && mysqli_query($conn, $query3) && mysqli_query($conn, $query1)){
+                                foreach ($images as $image) {
+                                    deleteImage($image, ROOMS_FOLDER);
+                                }
                                 $_SESSION['success'] = "Delete all row successfully!";
                             }else{
                                 $_SESSION['error'] = "Something went wrong!";
                             }
                         } else {
-                            $query1 = "DELETE FROM rooms WHERE room_id = ?";
-                            $query2 = "DELETE FROM rooms_features WHERE room_id = ?";
-                            $query3 = "DELETE FROM rooms_services WHERE room_id = ?";
-                            $values = array($form_data['delete_room']);
-                            $result2 = delete($query2, $values, "i");
-                            $result3 = delete($query3, $values, "i");
-                            $result1 = delete($query1, $values, "i");
-                            if($result1 && $result2 && $result3){
-                                $_SESSION['success'] = "Delete row successfully!";
-                            }else{
+                            $result = select("SELECT * FROM rooms WHERE `room_id` = ?", [$form_data['delete_room']], 'i');
+                            $row = mysqli_fetch_assoc($result);
+                            if(deleteImage($row['image'], ROOMS_FOLDER)){
+                                $query1 = "DELETE FROM rooms WHERE room_id = ?";
+                                $query2 = "DELETE FROM rooms_features WHERE room_id = ?";
+                                $query3 = "DELETE FROM rooms_services WHERE room_id = ?";
+                                $values = array($form_data['delete_room']);
+                                $result2 = delete($query2, $values, "i");
+                                $result3 = delete($query3, $values, "i");
+                                $result1 = delete($query1, $values, "i");
+                                if($result1 && $result2 && $result3){
+                                    $_SESSION['success'] = "Delete row successfully!";
+                                }else{
+                                    $_SESSION['error'] = "Something went wrong!";
+                                }
+                            } else {
                                 $_SESSION['error'] = "Something went wrong!";
                             }
                         }
@@ -247,7 +269,7 @@
                         <div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content" style="width: 600px">
-                                    <form method="post">
+                                    <form method="post" enctype='multipart/form-data'>
                                         <div class="modal-header">
                                             <h5 class="modal-title d-flex align-items-center">
                                                 <i class="mdi mdi-plus-circle mr-2"></i>
@@ -320,6 +342,12 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="mb-3">
+                                                    <label class="form-label">Image<span class="text-danger">*</span></label>
+                                                    <input type="file" name="image" class="form-control shadow-none" style="height: fit-content">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
                                                     <label class="form-label">Desciption<span class='text-danger'>*</span></label>
                                                     <textarea name="description" class="form-control shadow-none" rows="5"></textarea>
                                                 </div>
@@ -342,6 +370,7 @@
                                     <th>Guests</th>
                                     <th>Price</th>
                                     <th>Quantity</th>
+                                    <th>Image</th>
                                     <th>Status</th>
                                     <th width="5%">Action</th>
                                 </tr>
@@ -350,6 +379,7 @@
                                 <?php
                                     $query = "SELECT * FROM rooms ORDER BY room_id DESC";
                                     $data = mysqli_query($conn, $query);
+                                    $path = ROOMS_IMG_PATH;
                                     $i = 1;
                                     while ($row = mysqli_fetch_assoc($data)) {
                                         if($row['status'] == 1){
@@ -403,7 +433,10 @@
                                                     <span class='badge rounded-pill bg-light text-dark' style='font-size: 14px;'>Children: {$row['children']}</span>
                                                 </td>             
                                                 <td>".number_format($row['price'], 0, '', ',')." VNĐ</td>             
-                                                <td>{$row['quantity']}</td>             
+                                                <td>{$row['quantity']}</td>       
+                                                <td>
+                                                    <img src='$path{$row['image']}' class='rounded mx-auto d-block' width='100px'>
+                                                </td>        
                                                 <td class='text-center'>$status</td>                         
                                                 <td>
                                                     <button type='button' class='btn bg-transparent text-primary p-0 shadow-none text-center' data-toggle='modal' data-target='#editRoomModal{$row['room_id']}'>
@@ -413,7 +446,7 @@
                                                     <div class='modal fade' id='editRoomModal{$row['room_id']}' tabindex='-1' role='dialog' aria-labelledby='exampleModalLongTitle' aria-hidden='true'>
                                                         <div class='modal-dialog' role='document'>
                                                             <div class='modal-content' style='width: 600px'>
-                                                                <form method='post'>
+                                                                <form method='post' enctype='multipart/form-data'>
                                                                     <div class='modal-header'>
                                                                         <h5 class='modal-title d-flex align-items-center'>
                                                                             <i class='mdi mdi-pencil-circle mr-2'></i>
@@ -463,6 +496,12 @@
                                                                             <label class='form-label'>Services</label>
                                                                             <div class='row'>
                                                                                 $service
+                                                                            </div>
+                                                                        </div>
+                                                                          <div class='col-md-12'>
+                                                                            <div class='mb-3'>
+                                                                                <label class='form-label'>Image<span class='text-danger'>*</span></label>
+                                                                                <input type='file' name='image' class='form-control shadow-none' style='height: fit-content'>
                                                                             </div>
                                                                         </div>
                                                                         <div class='col-md-12'>

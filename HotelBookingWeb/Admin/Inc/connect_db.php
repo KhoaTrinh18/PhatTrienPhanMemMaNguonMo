@@ -11,6 +11,7 @@
 
     function filteration($data){
         foreach ($data as $key => $value) {
+            $data[$key] = preg_replace('/\s+/', ' ', $value);
             $data[$key] = trim($value);
             $data[$key] = stripslashes($value);
             $data[$key] = htmlspecialchars($value);

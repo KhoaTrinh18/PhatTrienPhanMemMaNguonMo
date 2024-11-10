@@ -10,3 +10,21 @@
 <script src="Public/js/jquery.slicknav.js"></script>
 <script src="Public/js/owl.carousel.min.js"></script>
 <script src="Public/js/main.js"></script>
+<script> window.addEventListener('load', function() {
+        const roomItems = document.querySelectorAll('.room-item');
+        let maxHeight = 0;
+
+        // Tính chiều cao lớn nhất của các phòng
+        roomItems.forEach(item => {
+            const height = item.offsetHeight;
+            if (height > maxHeight) {
+                maxHeight = height;
+            }
+        });
+
+        // Áp dụng chiều cao lớn nhất cho tất cả các phòng
+        roomItems.forEach(item => {
+            item.style.height = maxHeight + 'px';
+        });
+    });
+</script>

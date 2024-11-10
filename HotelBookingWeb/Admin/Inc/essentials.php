@@ -1,8 +1,10 @@
 <?php
     define('SITE_URL', 'http://127.0.0.1/HotelBookingWeb/');
     define('SERVICES_IMG_PATH', SITE_URL.'Admin/Public/images/services/');
+    define('ROOMS_IMG_PATH', SITE_URL.'Admin/Public/images/rooms/');
     define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT'].'/Admin/Public/images/');
     define('SERVICES_FOLDER', 'services/');
+    define('ROOMS_FOLDER', 'rooms/');
 
     function adminLogin()
     {

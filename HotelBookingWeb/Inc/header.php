@@ -20,7 +20,7 @@
                         <nav class="mainmenu">
                             <ul>
                                 <li><a href="index.php">Home</a></li>
-<!--                                <li><a href="./rooms.html">Rooms</a></li>-->
+                                <li><a href="rooms.php">Rooms</a></li>
                                 <li><a href="services.php">Services</a>
 <!--                                <li><a href="./about-us.html">About Us</a></li>-->
 <!--                                    <ul class="dropdown">-->
@@ -155,14 +155,22 @@
     document.addEventListener("DOMContentLoaded", function() {
         const currentUrl = window.location.href;
         const navItems = document.querySelectorAll(".mainmenu ul li a");
+
         navItems.forEach(link => {
             if (currentUrl.includes(link.getAttribute("href"))) {
                 link.parentElement.classList.add("active");
             } else {
                 link.parentElement.classList.remove("active");
             }
+
+            if (currentUrl.includes("room_detail.php")) {
+                if (link.getAttribute("href").includes("rooms.php")) {
+                    link.parentElement.classList.add("active");
+                }
+            }
         });
     });
+
 </script>
 
 

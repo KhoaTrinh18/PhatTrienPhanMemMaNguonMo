@@ -7,7 +7,7 @@
     <meta name="keywords" content="Sona, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NiKa Hotel - Facilities</title>
+    <title>NiKa Hotel - Services</title>
     <!-- css - icon - font -->
     <?php require ('Inc/links.php')?>
 </head>
@@ -19,10 +19,18 @@
     <!-- Services Section End -->
     <section class="services-section spad">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <h2>Our Services</h2>
+            <div class="breadcrumb-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="breadcrumb-text">
+                                <h2>Our Services</h2>
+                                <div class="bt-option">
+                                    <a href="index.php">Home</a>
+                                    <span>Services</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
