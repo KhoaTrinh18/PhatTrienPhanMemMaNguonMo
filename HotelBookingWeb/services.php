@@ -7,14 +7,17 @@
     <meta name="keywords" content="Sona, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NiKa Hotel - Services</title>
+    <title>NiKa Hotel - Dịch vụ</title>
     <!-- css - icon - font -->
     <?php require ('Inc/links.php')?>
 </head>
 
 <body>
     <!-- Header -->
-    <?php require ('Inc/header.php')?>
+    <?php
+        require ('Inc/header.php');
+        require ('Inc/login.php');
+    ?>
 
     <!-- Services Section End -->
     <section class="services-section spad">
@@ -24,10 +27,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="breadcrumb-text">
-                                <h2>Our Services</h2>
+                                <h2>Dịch vụ</h2>
                                 <div class="bt-option">
-                                    <a href="index.php">Home</a>
-                                    <span>Services</span>
+                                    <a href="index.php">Trang chủ</a>
+                                    <span>Dịch vụ</span>
                                 </div>
                             </div>
                         </div>
@@ -36,14 +39,14 @@
             </div>
             <div class="row">
                 <?php
-                    $result = selectAll('services');
+                    $result = selectAll('dichvu');
                     $path = SERVICES_IMG_PATH;
                     while ($row = mysqli_fetch_assoc($result)) {
                         echo "<div class='col-lg-4 col-sm-6'>
-                                <div class='service-item '>
-                                    <img src='$path{$row['image']}' width='80px'>
-                                    <h4>{$row['service_name']}</h4>
-                                    <p>{$row['description']}</p>
+                                <div class='service-item'>
+                                    <img src='$path{$row['anh_dichvu']}' width='80px'>
+                                    <h4>{$row['ten_dichvu']}</h4>
+                                    <p>{$row['mo_ta']}</p>
                                 </div>
                             </div>";
                     }

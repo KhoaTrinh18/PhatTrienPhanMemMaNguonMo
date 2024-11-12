@@ -14,7 +14,11 @@
 
 <body>
     <!-- Header -->
-    <?php require ('Inc/header.php')?>
+    <?php
+        require ('Inc/header.php');
+        require('Inc/login.php');
+    ?>
+
 
     <!-- Breadcrumb Section Begin -->
     <div class="breadcrumb-section mt-5">

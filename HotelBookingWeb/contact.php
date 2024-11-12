@@ -7,39 +7,66 @@
     <meta name="keywords" content="Sona, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NiKa Hotel - Contact</title>
+    <title>NiKa Hotel - Liên hệ</title>
     <!-- css - icon - font -->
     <?php require ('Inc/links.php')?>
 </head>
 
 <body>
     <!-- Header -->
-    <?php require ('Inc/header.php')?>
+    <?php require ('Inc/header.php'); ?>
 
     <!-- Contact Section Begin -->
     <section class="contact-section spad mt-5">
         <?php
-        if(isset($_POST["send"])){
-            $form_data = filteration($_POST);
-            $query = "INSERT INTO `contact`(`user_name`, `email`, `subject`, `message`) VALUES (?, ?, ?, ?)";
-            $values = array($form_data['user_name'], $form_data['email'], $form_data['subject'], $form_data['message']);
-            $result = insert($query, $values, "ssss");
-            if($result == 1) {
-                alert('success', 'Mail sent successfully!');
-            } else {
-                alert('error', 'Mail send failed! Try again later!');
+            if (isset($_SESSION['success'])) {
+                alert("success", $_SESSION['success']);
+                unset($_SESSION['success']);
             }
-        }
+
+            if (isset($_SESSION['error'])) {
+                alert("error", $_SESSION['error']);
+                unset($_SESSION['error']);
+            }
+
+            if(isset($_POST["gui"])){
+                $form_data = filteration($_POST);
+                if(empty($form_data['ten_kh'])){
+                    $_SESSION['error'] = "Tên không được để trống!";
+                } else if(!preg_match('/^[\p{L}\d\s]+$/u', $form_data['ten_kh'])) {
+                    $_SESSION['error'] = "Tên không chứa kí tự đặc biệt!";
+                } else if(preg_match('/[0-9]/', $form_data['ten_kh'])){
+                    $_SESSION['error'] = "Tên không chứa số!";
+                } else if(empty($form_data['email'])){
+                    $_SESSION['error'] = "Email không được để trống!";
+                } else if(!filter_var($form_data['email'], FILTER_VALIDATE_EMAIL)){
+                    $_SESSION['error'] = "Email không hợp lệ!";
+                } else if(empty($form_data['noi_dung'])){
+                    $_SESSION['error'] = "Nội dung không được để trống!";
+                } else {
+                    $query = "INSERT INTO `lienhe`(`ten_kh`, `email`, `tieu_de`, `noi_dung`) VALUES (?, ?, ?, ?)";
+                    $values = array($form_data['ten_kh'], $form_data['email'], $form_data['tieu_de'], $form_data['noi_dung']);
+                    $result = insert($query, $values, "ssss");
+                    if($result) {
+                        $_SESSION['success'] = "Gửi thành công! Cảm ơn bạn đã liên hệ!";
+                    } else {
+                        $_SESSION['error'] = "Gửi thất bại! Thử lại sau!";
+                    }
+                }
+                header("Location: contact.php");
+                exit;
+            }
         ?>
+        <?php require ('Inc/login.php'); ?>
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">
                     <div class="contact-text">
-                        <h2>Contact Info</h2>
+                        <h2>Thông tin liên hệ</h2>
                         <table>
                             <tbody>
                             <tr>
-                                <td class="c-o">Address:</td>
+                                <td class="c-o">Địa chỉ:</td>
                                 <td>Khu Bãi Dương, Vĩnh Phước, Nha Trang, Khánh Hòa</td>
                             </tr>
                             <tr>
@@ -58,15 +85,15 @@
                     <form class="contact-form" method="post">
                         <div class="row">
                             <div class="col-lg-6">
-                                <input type="text" name="user_name" placeholder="Your Name">
+                                <input type="text" name="ten_kh" placeholder="Tên">
                             </div>
                             <div class="col-lg-6">
-                                <input type="text" name="email" placeholder="Your Email">
+                                <input type="text" name="email" placeholder="Email">
                             </div>
                             <div class="col-lg-12">
-                                <input type="text" name="subject" placeholder="Subject">
-                                <textarea name="message" placeholder="Your Message"></textarea>
-                                <button name="send" type="submit">Submit Now</button>
+                                <input type="text" name="tieu_de" placeholder="Tiêu đề">
+                                <textarea name="noi_dung" placeholder="Nội dung"></textarea>
+                                <button name="gui" type="submit">Gửi</button>
                             </div>
                         </div>
                     </form>
@@ -80,8 +107,6 @@
         </div>
     </section>
     <!-- Contact Section End -->
-
-
 
     <!-- Footer -->
     <?php require ('Inc/footer.php')?>

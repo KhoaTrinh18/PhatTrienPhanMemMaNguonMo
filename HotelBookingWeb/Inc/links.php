@@ -4,8 +4,6 @@
 <!-- Google Font -->
 <link href="https://fonts.googleapis.com/css?family=Lora:400,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Cabin:400,500,600,700&display=swap" rel="stylesheet">
-
-<!-- Css Styles -->
 <link rel="stylesheet" href="Public/css/bootstrap.min.css" type="text/css">
 <link rel="stylesheet" href="Public/css/font-awesome.min.css" type="text/css">
 <link rel="stylesheet" href="Public/css/elegant-icons.css" type="text/css">

@@ -2,11 +2,11 @@
     $hostname = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "hotelbookingweb";
+    $dbname = "qlkhachsan";
     $conn = new mysqli($hostname, $username, $password, $dbname);
 
     if (!$conn) {
-        die.("Cannot connect to MySQL: ".mysqli_connect_error());
+        die.("Không thể kết nối MySQL: ".mysqli_connect_error());
     }
 
     function filteration($data){
@@ -38,10 +38,10 @@
                 return $result;
             }else{
                 mysqli_stmt_close($stmt);
-                die("Query excuted failed - Select");
+                die("Câu truy vấn thực hiện lỗi - Select");
             }
         }else{
-            die("Query prepared failed - Select");
+            die("Câu truy vấn chuẩn bị lỗi - Select");
         }
     }
 
@@ -56,10 +56,10 @@
                 return $result;
             }else{
                 mysqli_stmt_close($stmt);
-                die("Query excuted failed - Update");
+                die("Câu truy vấn thực hiện lỗi - Update");
             }
         }else{
-            die("Query prepared failed - Update");
+            die("Câu truy vấn chuẩn bị lỗi - Update");
         }
     }
 
@@ -74,10 +74,10 @@
                 return $result;
             }else{
                 mysqli_stmt_close($stmt);
-                die("Query excuted failed - Insert");
+                die("Câu truy vấn thực hiện lỗi - Insert");
             }
         }else{
-            die("Query prepared failed - Insert");
+            die("Câu truy vấn chuẩn bị lỗi - Insert");
         }
     }
 
@@ -92,10 +92,10 @@
                 return $result;
             }else{
                 mysqli_stmt_close($stmt);
-                die("Query excuted failed - Delete");
+                die("Câu truy vấn thực hiện lỗi - Delete");
             }
         }else{
-            die("Query prepared failed - Delete");
+            die("Câu truy vấn chuẩn bị lỗi - Delete");
         }
     }
 ?>

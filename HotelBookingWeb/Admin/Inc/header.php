@@ -1,12 +1,13 @@
 <?php
     require ('connect_db.php');
     require ('essentials.php');
+    Login();
 ?>
 
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        <a class="navbar-brand brand-logo" href="dashboard.php"><img src="Public/images/logo.svg" alt="logo" /></a>
-        <a class="navbar-brand brand-logo-mini" href="dashboard.php"><img src="Public/images/logo-mini.svg" alt="logo" /></a>
+        <a class="navbar-brand brand-logo" href="dashboard.php"><span class="navbar-brand fw-bold fs-3 h-font text-decoration-none" style="color: white">NiKa Hotel<span style="color: orange">.</span></span></a>
+        <a class="navbar-brand brand-logo-mini" href="dashboard.php" style="color: white">NK</a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-stretch justify-content-between">
         <div class="d-flex">
@@ -24,6 +25,6 @@
                 </form>
             </div>
         </div>
-        <a href="logout.php" class="btn btn-danger btn-sm my-2 d-flex align-items-center">Log out</a>
+        <a href="logout.php" class="btn btn-danger btn-sm my-2 d-flex align-items-center">Đăng xuất</a>
     </div>
 </nav>

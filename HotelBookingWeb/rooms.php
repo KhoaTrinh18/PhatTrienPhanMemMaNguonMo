@@ -7,14 +7,23 @@
     <meta name="keywords" content="Sona, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>NiKa Hotel - Rooms</title>
+    <title>NiKa Hotel - Phòng</title>
     <!-- css - icon - font -->
     <?php require ('Inc/links.php')?>
+    <style>
+        .room-pagination a.active{
+            background-color: #dfa974;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
     <!-- Header -->
-    <?php require ('Inc/header.php')?>
+    <?php
+        require ('Inc/header.php');
+        require ('Inc/login.php');
+    ?>
 
     <!-- Rooms Section Begin -->
     <section class="rooms-section spad" style="margin-top: 92px">
@@ -24,10 +33,10 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="breadcrumb-text">
-                                <h2>Our Rooms</h2>
+                                <h2>Phòng</h2>
                                 <div class="bt-option">
-                                    <a href="index.php">Home</a>
-                                    <span>Rooms</span>
+                                    <a href="index.php">Trang chủ</a>
+                                    <span>Phòng</span>
                                 </div>
                             </div>
                         </div>
@@ -44,74 +53,99 @@
                     }
                     //vị trí của mẩu tin đầu tiên trên mỗi trang
                     $offset = ($_GET['page'] - 1) * $rowsPerPage;
-                    $sql = 'SELECT * FROM rooms WHERE status = 1 LIMIT '.$offset.','.$rowsPerPage;
+                    $sql = 'SELECT * FROM phong WHERE trang_thai = 1 LIMIT '.$offset.','.$rowsPerPage;
 
                     $result = mysqli_query($conn, $sql);
                     $path = ROOMS_IMG_PATH;
 
                     while ($row = mysqli_fetch_assoc($result)) {
                         //Feature
-                        $query1 = "SELECT * FROM rooms_features JOIN features ON features.feature_id = rooms_features.feature_id WHERE room_id = ?";
-                        $res_room_fea = select($query1, [$row['room_id']], "i");
+                        $query1 = "SELECT * FROM phong_dacdiem JOIN dacdiem ON dacdiem.ma_dacdiem = phong_dacdiem.ma_dacdiem WHERE ma_phong = ?";
+                        $res_room_fea = select($query1, [$row['ma_phong']], "i");
                         $feature = "";
                         while($row1 = mysqli_fetch_assoc($res_room_fea)){
-                            $feature .= $row1['feature_name'].", ";
+                            $feature .= $row1['ten_dacdiem'].", ";
                         }
                         $feature = rtrim($feature, ", ");
                         //Service
-                        $query2 = "SELECT * FROM rooms_services JOIN services ON services.service_id = rooms_services.service_id WHERE room_id = ?";
-                        $res_room_ser = select($query2, [$row['room_id']], "i");
+                        $query2 = "SELECT * FROM phong_dichvu JOIN dichvu ON dichvu.ma_dichvu = phong_dichvu.ma_dichvu WHERE ma_phong = ?";
+                        $res_room_ser = select($query2, [$row['ma_phong']], "i");
                         $service = "";
                         while($row2 = mysqli_fetch_assoc($res_room_ser)){
-                            $service .= $row2['service_name'].", ";
+                            $service .= $row2['ten_dichvu'].", ";
                         }
                         $service = rtrim($service, ", ");
 
                         echo "<div class='col-lg-4 col-md-6'>
                                 <div class='room-item'>
-                                <img src='$path{$row['image']}' alt=''>
-                                <div class='ri-text'>
-                                    <h4>{$row['room_name']}</h4>
-                                    <h3>".number_format($row['price'], 0, '', ',')."VNĐ<span>/Pernight</span></h3>
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <td class='r-o'>Area:</td>
-                                                <td>{$row['area']} sqm</td>
-                                            </tr>
-                                            <tr>
-                                                <td class='r-o'>Adult:</td>
-                                                <td>Max person {$row['adult']}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class='r-o'>Children:</td>
-                                                <td>Max person {$row['children']}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class='r-o'>Features:</td>
-                                                <td>$feature</td>
-                                            </tr>
-                                            <tr>
-                                                <td class='r-o'>Services:</td>
-                                                <td>$service</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class='d-flex justify-content-center align-items-center'>
-                                        <a href='#' class='btn btn-success me-3'>Book Now</a>
-                                        <a href='room_detail.php?id={$row['room_id']}' class='primary-btn'>More Details</a>
-                                    </div>       
+                                    <img src='$path{$row['anh_phong']}' alt=''>
+                                    <div class='ri-text'>
+                                        <h4>{$row['ten_phong']}</h4>
+                                        <h3>".number_format($row['gia'], 0, '', ',')."VNĐ<span>/Đêm</span></h3>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td class='r-o'>Diện tích:</td>
+                                                    <td>{$row['dien_tich']}m²</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='r-o'>Người lớn:</td>
+                                                    <td>Số lượng tối đa {$row['sl_nguoi_lon']}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='r-o'>Trẻ em:</td>
+                                                    <td>Số lượng tối đa {$row['sl_tre_em']}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='r-o'>Đặc điểm:</td>
+                                                    <td>$feature</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class='r-o'>Dịch vụ:</td>
+                                                    <td>$service</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class='d-flex justify-content-center align-items-center'>
+                                            <a href='#' class='btn btn-success me-3'>Đặt ngay</a>
+                                            <a href='room_detail.php?id={$row['ma_phong']}' class='primary-btn'>Chi tiết</a>
+                                        </div>       
+                                    </div>
                                 </div>
-                            </div>
                             </div>";
                     }
                 ?>
                 <div class="col-lg-12">
                     <div class="room-pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">Next <i class="fa fa-long-arrow-right"></i></a>
-                        <a href="#"><i class="fa fa-long-arrow-left"></i> Previous </a>
+                        <?php
+                            $result = selectAll("phong");
+                            $numRows = mysqli_num_rows($result);
+                            $maxPage = ceil($numRows / $rowsPerPage);
+
+                            if ($_GET['page'] > 1) {
+                                echo "<a href=" . $_SERVER['PHP_SELF'] . "?page=" . ($_GET['page'] - 1) . "><i class='fa fa-long-arrow-left'></i> Previous</a> ";
+                            }
+
+                            if ($_GET['page'] > 3) {
+                                echo "<a href=" . $_SERVER['PHP_SELF'] . "?page=1".">"."1 </a> ... ";
+                            }
+
+                            for ($i = max(1, $_GET['page'] - 2); $i <= min($maxPage, $_GET['page'] + 2); $i++) {
+                                if ($i == $_GET['page']) {
+                                    echo "<a class='active'>$i</a> "; // Trang hiện tại
+                                } else {
+                                    echo "<a href=" . $_SERVER['PHP_SELF'] . "?page=$i".">"."$i</a> ";
+                                }
+                            }
+
+                            if ($_GET['page'] < $maxPage - 2) {
+                                echo "... <a href=" . $_SERVER['PHP_SELF'] . "?page=$maxPage".">."."$maxPage</a> ";
+                            }
+
+                            if ($_GET['page'] < $maxPage) {
+                                echo "<a href=" . $_SERVER['PHP_SELF'] . "?page=" . ($_GET['page'] + 1) . ">Next <i class='fa fa-long-arrow-right'></i></a>";
+                            }
+                        ?>
                     </div>
                 </div>
             </div>

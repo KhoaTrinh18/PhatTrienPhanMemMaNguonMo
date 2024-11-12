@@ -8,16 +8,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- css - icon - font -->
-    <title>NiKa Hotel - Home</title>
+    <title>NiKa Hotel - Trang chủ</title>
     <?php require ('Inc/links.php')?>
 </head>
 
 <body>
     <!-- Header -->
     <?php require ('Inc/header.php')?>
+    <div style="margin-top: 92px">
+        <?php
+            require ('Inc/login.php');
+        ?>
+    </div>
 
     <!-- Hero Section Begin -->
-    <section class="hero-section mt-5">
+    <section class="hero-section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -30,7 +35,7 @@
                 </div>
                 <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
                     <div class="booking-form">
-                        <h3>Booking Your Hotel</h3>
+                        <h3>Đặt phòng</h3>
                         <form>
                             <div class="check-date">
                                 <label>Check In:</label>
@@ -43,7 +48,7 @@
                                 <i class="icon_calendar"></i>
                             </div>
                             <div class="select-option">
-                                <label>Adult:</label>
+                                <label>Số lượng người lớn:</label>
                                 <select>
                                     <option value="1">1 Adults</option>
                                     <option value="2">2 Adults</option>
@@ -51,14 +56,14 @@
                                 </select>
                             </div>
                             <div class="select-option">
-                                <label>Children:</label>
+                                <label>Số lượng trẻ em:</label>
                                 <select id="room">
                                     <option value="1">1 Children</option>
                                     <option value="2">2 Children</option>
                                     <option value="3">3 Children</option>
                                 </select>
                             </div>
-                            <button type="submit">Check Availability</button>
+                            <button type="submit">Kiểm tra</button>
                         </form>
                     </div>
                 </div>
@@ -113,7 +118,7 @@
             <div class="hp-room-items">
                 <div class="row">
                     <?php
-                    $result = select("SELECT * FROM rooms WHERE status= ? ORDER BY room_id DESC", [1], 'i');
+                    $result = select("SELECT * FROM phong WHERE trang_thai= ? ORDER BY ma_phong DESC", [1], 'i');
                     $path = ROOMS_IMG_PATH;
                     $i = 0;
 
@@ -122,57 +127,56 @@
                             break;
                         }
                         //Feature
-                        $query1 = "SELECT * FROM rooms_features JOIN features ON features.feature_id = rooms_features.feature_id WHERE room_id = ?";
-                        $res_room_fea = select($query1, [$row['room_id']], "i");
+                        $query1 = "SELECT * FROM phong_dacdiem JOIN dacdiem ON dacdiem.ma_dacdiem = phong_dacdiem.ma_dacdiem WHERE ma_phong = ?";
+                        $res_room_fea = select($query1, [$row['ma_phong']], "i");
                         $feature = "";
                         while($row1 = mysqli_fetch_assoc($res_room_fea)){
-                            $feature .= $row1['feature_name'].", ";
+                            $feature .= $row1['ten_dacdiem'].", ";
                         }
                         $feature = rtrim($feature, ", ");
                         //Service
-                        $query2 = "SELECT * FROM rooms_services JOIN services ON services.service_id = rooms_services.service_id WHERE room_id = ?";
-                        $res_room_ser = select($query2, [$row['room_id']], "i");
+                        $query2 = "SELECT * FROM phong_dichvu JOIN dichvu ON dichvu.ma_dichvu = phong_dichvu.ma_dichvu WHERE ma_phong = ?";
+                        $res_room_ser = select($query2, [$row['ma_phong']], "i");
                         $service = "";
                         while($row2 = mysqli_fetch_assoc($res_room_ser)){
-                            $service .= $row2['service_name'].", ";
+                            $service .= $row2['ten_dichvu'].", ";
                         }
                         $service = rtrim($service, ", ");
 
                         echo "<div class='col-lg-3 col-md-6'>
                                 <div class='room-item'>
-                                    <img src='$path{$row['image']}' alt=''>
+                                    <img src='$path{$row['anh_phong']}' alt=''>
                                     <div class='ri-text'>
-                                        <h4>{$row['room_name']}</h4>
-                                        <h3>".number_format($row['price'], 0, '', ',')."VNĐ<span>/Pernight</span></h3>
+                                        <h4>{$row['ten_phong']}</h4>
+                                        <h3>".number_format($row['gia'], 0, '', ',')."VNĐ<span>/Đêm</span></h3>
                                         <table>
                                             <tbody>
                                                 <tr>
-                                                    <td class='r-o'>Area:</td>
-                                                    <td>{$row['area']} sqm</td>
+                                                    <td class='r-o'>Diện tích:</td>
+                                                    <td>{$row['dien_tich']}m²</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class='r-o'>Adult:</td>
-                                                    <td>Max person {$row['adult']}</td>
+                                                    <td class='r-o'>Người lớn:</td>
+                                                    <td>Số lượng tối đa {$row['sl_nguoi_lon']}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class='r-o'>Children:</td>
-                                                    <td>Max person {$row['children']}</td>
+                                                    <td class='r-o'>Trẻ em:</td>
+                                                    <td>Số lượng tối đa {$row['sl_tre_em']}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class='r-o'>Features:</td>
+                                                    <td class='r-o'>Đặc điểm:</td>
                                                     <td>$feature</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class='r-o'>Services:</td>
+                                                    <td class='r-o'>Dịch vụ:</td>
                                                     <td>$service</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                         <div class='d-flex justify-content-center align-items-center'>
-                                        <a href='#' class='btn btn-success me-3'>Book Now</a>
-                                        <a href='room_detail?id={$row['room_id']}' class='primary-btn'>More Details</a>
-</div>
-                                        
+                                            <a href='#' class='btn btn-success me-3'>Đặt ngay</a>
+                                            <a href='room_detail.php?id={$row['ma_phong']}' class='primary-btn'>Chi tiết</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>";
@@ -192,8 +196,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Testimonials</span>
-                        <h2>What Customers Say?</h2>
+                        <span>Bình luận</span>
+                        <h2>Những gì khách hàng nói?</h2>
                     </div>
                 </div>
             </div>

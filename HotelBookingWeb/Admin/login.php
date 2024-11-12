@@ -1,10 +1,6 @@
 <?php
     require ('Inc/connect_db.php');
     require ('Inc/essentials.php');
-    session_start();
-    if (isset($_SESSION['admin_login']) && $_SESSION['admin_login'] == true) {
-        redirect('dashboard.php');
-    }
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +9,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Connect Plus</title>
+    <title>Đăng nhập</title>
 
     <?php require ('Inc/links.php')?>
 </head>
@@ -24,49 +20,58 @@
                 <div class="row flex-grow">
                     <div class="col-lg-4 mx-auto">
                         <?php
-                        if(isset($_POST['login'])){
-                            //Loc du lieu
-                            $form_data = filteration($_POST);
-
-                            $query = 'SELECT * FROM admin WHERE admin_name = ? AND admin_pass = ?';
-                            $values = array($form_data["admin_name"],$form_data["admin_pass"]);
-                            $result = select($query, $values, "ss");
-                            if($result->num_rows == 1){
-                                $row = mysqli_fetch_assoc($result);
-                                $_SESSION['admin_login'] = true;
-                                $_SESSION['admin_id'] = $row['admin_id'];
-                                redirect("dashboard.php");
-                                alert("success", "Login successed! Invalid username or password!");
-                            }else{
-                                alert("error", "Login failed! Invalid username or password!");
+                            if (isset($_SESSION['success'])) {
+                                alert("success", $_SESSION['success']);
+                                unset($_SESSION['success']);
                             }
-                        }
+
+                            if (isset($_SESSION['error'])) {
+                                alert("error", $_SESSION['error']);
+                                unset($_SESSION['error']);
+                            }
+
+                            if(isset($_POST['dang_nhap'])){
+                                    $form_data = filteration($_POST);
+                                    $query = "SELECT * FROM taikhoan WHERE ten_tk = ? AND mat_khau = ? AND quyen = 'admin' OR quyen = 'nhanvien'";
+                                    $values = [$form_data["ten_tk"], $form_data["mat_khau"]];
+                                    $result = select($query, $values, "ss");
+                                    if(empty($form_data['ten_tk'])){
+                                        $_SESSION['error'] = "Tên tài khoản không được để trống!";
+                                    } else if(empty($form_data['mat_khau'])){
+                                        $_SESSION['error'] = "Mật khẩu không được để trống!";
+                                    } else if(mysqli_num_rows($result) == 0){
+                                        $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
+                                    } else {
+                                        if($result){
+                                            $row = mysqli_fetch_assoc($result);
+                                            $_SESSION['ma_tk_nv'] = $row['ma_tk'];
+                                            $_SESSION['success'] = "Đăng nhập thành công!";
+                                            header('location: dashboard.php');
+                                            exit;
+                                        } else {
+                                            $_SESSION['error'] = "Có lỗi xảy ra!";
+                                        }
+                                    }
+                                }
                         ?>
                         <div class="auth-form-light text-left p-5">
                             <div class="text-center">
-                                <h1>Admin Login</h1>
-                                <h6 class="font-weight-light">Sign in to continue.</h6>
+                                <h1>Đăng nhập</h1>
+                                <h6 class="font-weight-light">Đăng nhập để tiếp tục.</h6>
                             </div>
                             <form class="pt-3" method="post">
                                 <div class="form-group">
-                                    <input type="text" class="form-control form-control-lg" placeholder="Username"
-                                           name="admin_name" value="<?php echo (isset($_POST['admin_name'])) ? $_POST['admin_name'] : "";?>">
+                                    <input type="text" class="form-control form-control-lg" placeholder="Tên tài khoản"
+                                           name="ten_tk">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-lg" placeholder="Password"
-                                           name="admin_pass" value="<?php echo (isset($_POST['admin_name'])) ? $_POST['admin_pass'] : "";?>">
+                                    <input type="password" class="form-control form-control-lg" placeholder="Mật khẩu"
+                                           name="mat_khau">
                                 </div>
                                 <div class="mt-3">
-                                    <input type="submit" name="login" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="SIGN IN">
+                                    <input type="submit" name="dang_nhap" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="Đăng nhập">
                                 </div>
-                                <div class="my-2 d-flex justify-content-between align-items-center">
-                                    <div class="form-check">
-                                        <label class="form-check-label text-muted">
-                                            <input type="checkbox" class="form-check-input"> Keep me signed in </label>
-                                    </div>
-                                    <a href="#" class="auth-link text-black">Forgot password?</a>
-                                </div>
-                                <div class="text-center mt-4 font-weight-light"> Don't have an account? <a href="register.html" class="text-primary">Create</a>
+                                <div class="text-center mt-4 font-weight-light"> Bạn chưa có tài khoản? <a href="register.php" class="text-primary">Đăng ký</a>
                                 </div>
                             </form>
                         </div>
