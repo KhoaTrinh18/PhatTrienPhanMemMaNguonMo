@@ -57,7 +57,7 @@
                 exit;
             }
         ?>
-        <?php require ('Inc/login.php'); ?>
+        <?php require('Inc/login_register.php'); ?>
         <div class="container">
             <div class="row">
                 <div class="col-lg-4">

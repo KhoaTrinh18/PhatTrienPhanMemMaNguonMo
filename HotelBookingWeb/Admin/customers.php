@@ -36,24 +36,38 @@
                         if($form_data['xoa'] == 'all'){
                             $query1 = "DELETE FROM khachhang";
                             $query2 = "DELETE FROM taikhoan where quyen = 'khachhang'";
+                            $khachhangs = selectAll("khachhang");
+                            $images = [];
+                            while($row = mysqli_fetch_assoc($khachhangs)){
+                                $images[] = $row['anh_kh'];
+                            }
                             if(mysqli_query($conn, $query1) && mysqli_query($conn, $query2)) {
+                                foreach ($images as $image) {
+                                    deleteImage($image, CUSTOMER_FOLDER);
+                                }
                                 $_SESSION['success'] = "Xóa toàn bộ bản ghi thành công!";
                             }else{
                                 $_SESSION['error'] = "Có lỗi xảy ra!";
                             }
                         } else {
                             // Xoa 1 khach hang
-                            // Xoa khach hang trong bang khach hang
-                            $query1 = "DELETE FROM khachhang WHERE ma_kh = ?";
-                            $values = array($form_data['xoa']);
-                            $result1 = delete($query1, $values, "i");
+                            $result = select("SELECT * FROM khachhang WHERE ma_kh = ?", [$form_data['xoa']], 'i');
+                            $row = mysqli_fetch_assoc($result);
+                            if(deleteImage($row['anh_kh'], CUSTOMER_FOLDER)){
+                                // Xoa khach hang trong bang khach hang
+                                $query1 = "DELETE FROM khachhang WHERE ma_kh = ?";
+                                $values = array($form_data['xoa']);
+                                $result1 = delete($query1, $values, "i");
 
-                            // Xoa tai khoan khach hang trong bang tai khoan
-                            $query2 = "DELETE FROM taikhoan WHERE ma_nd = ? AND quyen = 'khachhang'";
-                            $result2 = delete($query2, $values, "i");
-                            if($result1 && $result2){
-                                $_SESSION['success'] = "Xóa bản ghi thành công!";
-                            }else{
+                                // Xoa tai khoan khach hang trong bang tai khoan
+                                $query2 = "DELETE FROM taikhoan WHERE ma_nd = ? AND quyen = 'khachhang'";
+                                $result2 = delete($query2, $values, "i");
+                                if($result1 && $result2){
+                                    $_SESSION['success'] = "Xóa bản ghi thành công!";
+                                }else{
+                                    $_SESSION['error'] = "Có lỗi xảy ra!";
+                                }
+                            } else {
                                 $_SESSION['error'] = "Có lỗi xảy ra!";
                             }
                         }
@@ -77,7 +91,7 @@
                                 <th>Tên khách hàng</th>
                                 <th>Ngày sinh</th>
                                 <th>Email</th>
-                                <th>Số điện thoaại</th>
+                                <th>Số điện thoại</th>
                                 <th>Địa chỉ</th>
                                 <th>Hình ảnh</th>
                                 <th>Hành động</th>

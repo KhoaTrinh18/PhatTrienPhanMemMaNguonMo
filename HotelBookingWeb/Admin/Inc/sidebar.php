@@ -31,5 +31,17 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="staff.php">
+                <span class="icon-bg"><i class="mdi mdi-human menu-icon"></i></span>
+                <span class="menu-title">Nhân viên</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="accounts.php">
+                <span class="icon-bg"><i class="mdi mdi-account-circle menu-icon"></i></span>
+                <span class="menu-title">Tài khoản</span>
+            </a>
+        </li>
     </ul>
 </nav>

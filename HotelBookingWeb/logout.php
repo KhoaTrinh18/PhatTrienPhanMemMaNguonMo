@@ -1,6 +1,5 @@
 <?php
     require('Admin/Inc/essentials.php');
-    session_unset();
-    session_destroy();
+    unset($_SESSION['ma_tk_kh']);
     redirect("index.php");
 ?>

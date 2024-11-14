@@ -245,7 +245,7 @@
                             } else if($img_r == 'upl_failed'){
                                 $_SESSION['error'] = "Tải hình ảnh thất bại!";
                             } else {
-                                $query = "UPDATE dichvu SET ten_dichvu = ?, anh_dichvu = ?, mo_ta = ? where ma_dichvu = ?";
+                                $query = "UPDATE dichvu SET ten_dichvu = ?, anh_dichvu = ?, mo_ta = ? WHERE ma_dichvu = ?";
                                 $values = array($form_data['ten_dichvu'], $img_r, $form_data['mo_ta'], $form_data['ma_dichvu']);
                                 $result = update($query, $values, "sssi");
                                 if ($result) {

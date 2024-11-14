@@ -31,28 +31,29 @@
                             }
 
                             if(isset($_POST['dang_nhap'])){
-                                    $form_data = filteration($_POST);
-                                    $query = "SELECT * FROM taikhoan WHERE ten_tk = ? AND mat_khau = ? AND quyen = 'admin' OR quyen = 'nhanvien'";
-                                    $values = [$form_data["ten_tk"], $form_data["mat_khau"]];
-                                    $result = select($query, $values, "ss");
-                                    if(empty($form_data['ten_tk'])){
-                                        $_SESSION['error'] = "Tên tài khoản không được để trống!";
-                                    } else if(empty($form_data['mat_khau'])){
-                                        $_SESSION['error'] = "Mật khẩu không được để trống!";
-                                    } else if(mysqli_num_rows($result) == 0){
-                                        $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
-                                    } else {
-                                        if($result){
-                                            $row = mysqli_fetch_assoc($result);
-                                            $_SESSION['ma_tk_nv'] = $row['ma_tk'];
-                                            $_SESSION['success'] = "Đăng nhập thành công!";
-                                            header('location: dashboard.php');
-                                            exit;
-                                        } else {
-                                            $_SESSION['error'] = "Có lỗi xảy ra!";
-                                        }
+                                $form_data = filteration($_POST);
+                                $query = "SELECT * FROM taikhoan WHERE ten_tk = ? AND (quyen = 'admin' OR quyen = 'nhanvien')";
+                                $values = [$form_data["ten_tk"]];
+                                $result = select($query, $values, "s");
+                                if(empty($form_data['ten_tk'])){
+                                    $_SESSION['error'] = "Tên tài khoản không được để trống!";
+                                } else if(empty($form_data['mat_khau'])){
+                                    $_SESSION['error'] = "Mật khẩu không được để trống!";
+                                } else if(mysqli_num_rows($result) != 1){
+                                    $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
+                                } else {
+                                    $row = mysqli_fetch_assoc($result);
+                                    if(password_verify($form_data["mat_khau"], $row["mat_khau"])){
+                                        $_SESSION['ma_tk_nv'] = $row['ma_tk'];
+                                        $_SESSION['success'] = "Đăng nhập thành công!";
+                                        header('location: dashboard.php');
+                                        exit;
                                     }
+                                    $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
                                 }
+                                header('location: login.php');
+                                exit;
+                            }
                         ?>
                         <div class="auth-form-light text-left p-5">
                             <div class="text-center">
@@ -70,8 +71,6 @@
                                 </div>
                                 <div class="mt-3">
                                     <input type="submit" name="dang_nhap" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="Đăng nhập">
-                                </div>
-                                <div class="text-center mt-4 font-weight-light"> Bạn chưa có tài khoản? <a href="register.php" class="text-primary">Đăng ký</a>
                                 </div>
                             </form>
                         </div>

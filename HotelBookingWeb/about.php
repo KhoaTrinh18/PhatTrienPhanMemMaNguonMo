@@ -16,7 +16,7 @@
     <!-- Header -->
     <?php
         require ('Inc/header.php');
-        require('Inc/login.php');
+        require('Inc/login_register.php');
     ?>
 
 

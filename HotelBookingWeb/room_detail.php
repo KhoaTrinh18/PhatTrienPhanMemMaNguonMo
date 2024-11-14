@@ -42,7 +42,7 @@
         }
         ?>
     </div>
-    <?php require ('Inc/login.php'); ?>
+    <?php require('Inc/login_register.php'); ?>
     <!-- Room Details Section Begin -->
     <section class="room-details-section spad" style="margin-top: 92px">
         <div class="container">

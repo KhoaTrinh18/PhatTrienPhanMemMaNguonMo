@@ -1,6 +1,5 @@
 <?php
     require ('Inc/essentials.php');
-    session_unset();
-    session_destroy();
+    unset($_SESSION['ma_tk_nv']);
     redirect("login.php");
 ?>

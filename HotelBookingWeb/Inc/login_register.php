@@ -9,28 +9,39 @@
         unset($_SESSION['error']);
     }
 
-    if(isset($_POST['dang_ky'])){
+    if(isset($_POST['dang_ky'])) {
         $form_data = filteration($_POST);
-        $result = selectAll("taikhoan");
+        $result1 = selectAll("taikhoan");
         $ten_tks = [];
-        while ($row = mysqli_fetch_assoc($result)) {
+        while ($row = mysqli_fetch_assoc($result1)) {
             $ten_tks[] = $row['ten_tk'];
         }
-        if(empty($form_data['ten_kh'])){
+        $result2 = selectAll("khachhang");
+        $emails = [];
+        $so_dien_thoais = [];
+        while ($row = mysqli_fetch_assoc($result2)) {
+            $emails[] = $row['email'];
+            $so_dien_thoais[] = $row['so_dien_thoai'];
+        }
+        if (empty($form_data['ten_kh'])) {
             $_SESSION['error'] = "Tên không được để trống!";
-        } else if(!preg_match('/^[\p{L}\d\s]+$/u', $form_data['ten_kh'])) {
+        } else if (!preg_match('/^[\p{L}\d\s]+$/u', $form_data['ten_kh'])) {
             $_SESSION['error'] = "Tên không chứa kí tự đặc biệt!";
-        } else if(preg_match('/[0-9]/', $form_data['ten_kh'])){
+        } else if (preg_match('/[0-9]/', $form_data['ten_kh'])) {
             $_SESSION['error'] = "Tên không chứa số!";
-        } else if(empty($form_data['email'])){
+        } else if (empty($form_data['email'])) {
             $_SESSION['error'] = "Email không được để trống!";
-        } else if(!filter_var($form_data['email'], FILTER_VALIDATE_EMAIL)) {
+        } else if (!filter_var($form_data['email'], FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = "Email không hợp lệ!";
-        } else if(empty($form_data['so_dien_thoai'])){
+        } else if (in_array($form_data['email'], $emails)) {
+            $_SESSION['error'] = "Email đã tồn tại!";
+        } else if (empty($form_data['so_dien_thoai'])) {
             $_SESSION['error'] = "Số điện thoại không được để trống!";
-        } else if(!preg_match('/^([+]\d{2})?\d{10}$/', $form_data['so_dien_thoai'])){
+        } else if (!preg_match('/^([+]\d{2})?\d{10}$/', $form_data['so_dien_thoai'])) {
             $_SESSION['error'] = "Số điện thoại không hợp lệ!";
-        } else if(empty($form_data['dia_chi'])){
+        } else if(in_array($form_data['so_dien_thoai'], $so_dien_thoais)) {
+            $_SESSION['error'] = "Số điện thoại đã tồn tại!";
+        }else if(empty($form_data['dia_chi'])){
             $_SESSION['error'] = "Địa chỉ không được để trống!";
         } else if(empty($form_data['ngay_sinh'])){
             $_SESSION['error'] = "Ngày sinh không được để trống!";
@@ -61,7 +72,8 @@
                 // Them vao bang tai khoan
                 $ma_kh = mysqli_insert_id($conn);
                 $query2 = "INSERT INTO `taikhoan`(`ten_tk`, `mat_khau`, `ma_nd`, `quyen`) VALUES (?, ?, ?, ?)";
-                $values2 = [$form_data['ten_tk'], $form_data['mat_khau'], $ma_kh, 'khachhang'];
+                $mat_khau_bm = password_hash($form_data['mat_khau'], PASSWORD_DEFAULT);
+                $values2 = [$form_data['ten_tk'], $mat_khau_bm, $ma_kh, 'khachhang'];
                 $result2 = insert($query2, $values2, "ssss");
 
                 if($result1 && $result2){
@@ -77,22 +89,26 @@
 
     if(isset($_POST['dang_nhap'])){
         $form_data = filteration($_POST);
-        $query = "SELECT * FROM taikhoan WHERE ten_tk = ? AND mat_khau = ? AND quyen = 'khachhang'";
-        $values = [$form_data['ten_tk'], $form_data['mat_khau']];
-        $result = select($query, $values, "ss");
-        if(empty($form_data['ten_tk'])){
+        if (empty($form_data['ten_tk'])) {
             $_SESSION['error'] = "Tên đăng nhập không được để trống!";
-        } else if(empty($form_data['mat_khau'])){
+        } else if (empty($form_data['mat_khau'])) {
             $_SESSION['error'] = "Mật khẩu không được để trống!";
-        } else if(mysqli_num_rows($result) == 0){
-            $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
         } else {
-            if($result){
-                $row = mysqli_fetch_assoc($result);
-                $_SESSION['ma_tk_kh'] = $row['ma_tk'];
-                $_SESSION['success'] = "Đăng nhập thành công!";
+            $query = "SELECT * FROM taikhoan WHERE ten_tk = ? AND quyen = 'khachhang'";
+            $values = [$form_data['ten_tk']];
+            $result = select($query, $values, "s");
+            if (mysqli_num_rows($result) != 1) {
+                $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
             } else {
-                $_SESSION['success'] = "Có lỗi xảy ra!";
+                $row = mysqli_fetch_assoc($result);
+                if (password_verify($form_data['mat_khau'], $row['mat_khau'])) {
+                    $_SESSION['ma_tk_kh'] = $row['ma_tk'];
+                    $_SESSION['success'] = "Đăng nhập thành công!";
+                    header("Location: index.php");
+                    exit;
+                } else {
+                    $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";
+                }
             }
         }
         header("Location: index.php");

@@ -4,10 +4,12 @@
     define('SERVICES_IMG_PATH', '/Admin/Public/images/services/');
     define('ROOMS_IMG_PATH', '/Admin/Public/images/rooms/');
     define('CUSTOMERS_IMG_PATH', '/Admin/Public/images/customers/');
+    define('STAFF_IMG_PATH', '/Admin/Public/images/staff/');
     define('UPLOAD_IMAGE_PATH', $_SERVER['DOCUMENT_ROOT'].'/Admin/Public/images/');
     define('SERVICES_FOLDER', 'services/');
     define('ROOMS_FOLDER', 'rooms/');
     define('CUSTOMER_FOLDER', 'customers/');
+    define('STAFF_FOLDER', 'staff/');
 
     function Login()
     {

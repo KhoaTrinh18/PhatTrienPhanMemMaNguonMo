@@ -2,6 +2,8 @@
     require ('connect_db.php');
     require ('essentials.php');
     Login();
+    $result = select("SELECT * FROM `taikhoan` WHERE ma_tk = ?", [$_SESSION['ma_tk_nv']], "i");
+    $row = mysqli_fetch_assoc($result);
 ?>
 
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -25,6 +27,9 @@
                 </form>
             </div>
         </div>
-        <a href="logout.php" class="btn btn-danger btn-sm my-2 d-flex align-items-center">Đăng xuất</a>
+        <div class="d-flex justify-content-center align-items-center">
+            <span>Xin chào, <?php echo $row['ten_tk']?></span>
+            <a href="logout.php" class="btn btn-danger btn-sm m-2 d-flex align-items-center">Đăng xuất</a>
+        </div>
     </div>
 </nav>

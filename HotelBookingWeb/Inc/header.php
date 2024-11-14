@@ -47,7 +47,7 @@
                                     $result = select("SELECT * FROM taikhoan WHERE ma_tk = ?",[$_SESSION['ma_tk_kh']], 'i');
                                     $row = mysqli_fetch_assoc($result);
                                     echo "<div>
-                                            <span class='mr-2'>Hello, ".$row['ten_tk']. "</span>
+                                            <span class='mr-2'>Xin chào, ".$row['ten_tk']. "</span>
                                             <a href='logout.php' type='button' class='btn btn-outline-danger shadow-none'>
                                                 Đăng xuất
                                             </a>

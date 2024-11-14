@@ -17,7 +17,7 @@
     <?php require ('Inc/header.php')?>
     <div style="margin-top: 92px">
         <?php
-            require ('Inc/login.php');
+            require('Inc/login_register.php');
         ?>
     </div>
 
