@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 12, 2024 at 12:04 PM
+-- Generation Time: Nov 14, 2024 at 07:13 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -85,7 +85,7 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`ma_kh`, `ten_kh`, `ngay_sinh`, `email`, `so_dien_thoai`, `dia_chi`, `anh_kh`) VALUES
-(2, 'Đăng Duy', '2003-11-18', 'dangduy7920@gmail.com', '0982578085', 'Nha Trang - Khánh Hòa', 'IMG_21244.jpg');
+(4, 'Tuấn', '2003-11-23', 'tuan1234@gmail.com', '0232932332', 'Nha Trang', 'IMG_93623.jpg');
 
 -- --------------------------------------------------------
 
@@ -133,7 +133,9 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`ma_nv`, `ten_nv`, `ngay_sinh`, `email`, `so_dien_thoai`, `dia_chi`, `anh_nv`) VALUES
-(1, 'Trịnh Đăng Khoa', '2003-11-18', 'trinhkhoa1811@gmail.com', '', 'Nha Trang - Khánh Hòa', '');
+(9, 'Tùng', '2003-03-21', 'tung1234@gmail.com', '0356728190', 'Nha Trang', 'IMG_92213.jpg'),
+(10, 'Khoa', '2003-11-18', 'khoa123@gmail.com', '0368410685', 'Nha Trang', 'IMG_37837.jpg'),
+(11, 'Thành', '2002-11-18', 'thanh1234@gmail.com', '0263721233', 'Nha Trang', 'IMG_51218.jpg');
 
 -- --------------------------------------------------------
 
@@ -242,7 +244,7 @@ INSERT INTO `phong_dichvu` (`ma_phong_dv`, `ma_phong`, `ma_dichvu`) VALUES
 
 CREATE TABLE `taikhoan` (
   `ma_tk` int(11) NOT NULL,
-  `ten_tk` varchar(150) NOT NULL,
+  `ten_tk` varchar(150) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `mat_khau` varchar(150) NOT NULL,
   `ma_nd` int(11) NOT NULL,
   `quyen` varchar(20) NOT NULL
@@ -253,8 +255,10 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`ma_tk`, `ten_tk`, `mat_khau`, `ma_nd`, `quyen`) VALUES
-(1, 'khoa', '123', 1, 'admin'),
-(3, 'Duy', 'Duy@1234', 2, 'khachhang');
+(12, 'tung', '$2y$10$20lVkLzHUuxzCmgcutI6je1Ifh4q5xTduHVfg5feQ5EOvAZmwuhFu', 9, 'nhanvien'),
+(13, 'khoa', '$2y$10$ZnnuhXr38uiYlYqIkOjMzuV/WOJRNiGvCR3vCDUE7dpNZXMI01tRK', 10, 'admin'),
+(14, 'thanh', '$2y$10$T2zMLaAiMBDvxVDQUE0qtO552s8vZHZc4/7g.cBsSG20y1ix3WMzm', 11, 'nhanvien'),
+(15, 'tuan', '$2y$10$T1zngNpcYC0qA9bRT6LEOO0xGyEZ4oz95r2W65WZNvnOv1aY0KkeK', 4, 'khachhang');
 
 --
 -- Indexes for dumped tables
@@ -338,7 +342,7 @@ ALTER TABLE `dichvu`
 -- AUTO_INCREMENT for table `khachhang`
 --
 ALTER TABLE `khachhang`
-  MODIFY `ma_kh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ma_kh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `lienhe`
@@ -350,7 +354,7 @@ ALTER TABLE `lienhe`
 -- AUTO_INCREMENT for table `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `ma_nv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ma_nv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `phong`
@@ -374,7 +378,7 @@ ALTER TABLE `phong_dichvu`
 -- AUTO_INCREMENT for table `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  MODIFY `ma_tk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ma_tk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
