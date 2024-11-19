@@ -1,4 +1,9 @@
 <?php
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    require 'PHPMailer/src/Exception.php';
+    require 'PHPMailer/src/PHPMailer.php';
+    require 'PHPMailer/src/SMTP.php';
     ob_start();
     session_start();
     define('SERVICES_IMG_PATH', '/Admin/Public/images/services/');
@@ -73,5 +78,33 @@
             return true;
         }
         return false;
+    }
+
+    function sendMail($email, $name, $subject, $body): int
+    {
+        $mail = new PHPMailer(true);
+
+        try {
+            //Server settings
+            $mail->isSMTP();
+            $mail->Host       = 'smtp.gmail.com';
+            $mail->CharSet = 'UTF-8';
+            $mail->SMTPAuth   = true;
+            $mail->Username   = 'trinhkhoa1811@gmail.com';
+            $mail->Password   = 'rcfj evaa znsu ofur';
+            $mail->Port       = 465;
+            $mail->SMTPSecure = "ssl";
+
+            $mail->setFrom('trinhkhoa1811@gmail.com', 'NiKa Hotel');
+            $mail->addAddress($email, $name);
+            $mail->isHTML(true);
+            $mail->Subject = $subject;
+            $mail->Body    = $body;
+
+            $mail->send();
+            return 1;
+        } catch (Exception $e) {
+            return 0;
+        }
     }
 ?>

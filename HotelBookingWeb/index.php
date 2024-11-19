@@ -18,6 +18,40 @@
     <div style="margin-top: 92px">
         <?php
             require('Inc/login_register.php');
+            if(isset($_POST['kiem_tra'])){
+                $form_data = filteration($_POST);
+                if(empty($form_data['ngay_np'])){
+                    $_SESSION['error'] = "Ngày nhận phòng không được để trống!";
+                } else if(empty($form_data['ngay_tp'])){
+                    $_SESSION['error'] = "Ngày trả phòng không được để trống!";
+                } else if(empty($form_data['sl_nguoi_lon'])){
+                    $_SESSION['error'] = "Số lượng người lớn không được để trống!";
+                } else if(empty($form_data['sl_tre_em'])){
+                    $_SESSION['error'] = "Số lượng trẻ em không được để trống!";
+                } else {
+                    $ngay_np = DateTime::createFromFormat("d F, Y", $form_data['ngay_np']);
+                    $ngay_tp = DateTime::createFromFormat("d F, Y", $form_data['ngay_tp']);
+                    $hom_nay = new DateTime();
+                    if ($ngay_np->format('y-m-d') <= $hom_nay->format('y-m-d')){
+                        $_SESSION['error'] = "Ngày nhận phòng phải sau ngày hôm nay!";
+                    } else if($ngay_np->format('y-m-d') >= $ngay_tp->format('y-m-d')) {
+                        $_SESSION['error'] = "Ngày trả phòng phải sau ngày nhận phòng!";
+                    } else if(!filter_var($form_data['sl_nguoi_lon'], FILTER_VALIDATE_INT) || $form_data['sl_nguoi_lon'] < 1){
+                        $_SESSION['error'] = "Số lượng người lớn phải là số nguyên > 0 !";
+                    } else if (!filter_var($form_data['sl_tre_em'], FILTER_VALIDATE_INT) || $form_data['sl_tre_em'] < 0){
+                        $_SESSION['error'] = "Số lượng trẻ em phải là số nguyên >= 0 !";
+                    } else {
+                        $_SESSION['ngay_np'] = $ngay_np;
+                        $_SESSION['ngay_tp'] = $ngay_tp;
+                        $_SESSION['sl_nguoi_lon'] = $form_data['sl_nguoi_lon'];
+                        $_SESSION['sl_tre_em'] = $form_data['sl_tre_em'];
+                        header("Location: dexuat.php");
+                        exit;
+                    }
+                }
+                header("Location: index.php");
+                exit;
+            }
         ?>
     </div>
 
@@ -28,42 +62,34 @@
                 <div class="col-lg-6">
                     <div class="hero-text">
                         <h1>Nika A Luxury Hotel</h1>
-                        <p>Here are the best hotel booking sites, including recommendations for international
-                            travel and for finding low-priced hotel rooms.</p>
-                        <a href="#" class="primary-btn">Discover Now</a>
+                        <p>Đây là trang web đặt phòng khách sạn tốt nhất, bao gồm các khuyến nghị
+                            về du lịch quốc tế và tìm phòng khách sạn giá rẻ.</p>
+                        <a href="#" class="primary-btn">Khám phá ngay</a>
                     </div>
                 </div>
                 <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
                     <div class="booking-form">
                         <h3>Đặt phòng</h3>
-                        <form>
+                        <form method="post">
                             <div class="check-date">
-                                <label>Check In:</label>
-                                <input type="text" class="date-input">
+                                <label>Ngày nhận phòng:</label>
+                                <input type="text" name="ngay_np" class="date-input">
                                 <i class="icon_calendar"></i>
                             </div>
                             <div class="check-date">
-                                <label>Check Out:</label>
-                                <input type="text" class="date-input">
+                                <label>Ngày trả phòng:</label>
+                                <input type="text" name="ngay_tp" class="date-input">
                                 <i class="icon_calendar"></i>
                             </div>
                             <div class="select-option">
                                 <label>Số lượng người lớn:</label>
-                                <select>
-                                    <option value="1">1 Adults</option>
-                                    <option value="2">2 Adults</option>
-                                    <option value="3">3 Adults</option>
-                                </select>
+                                <input type="text" name="sl_nguoi_lon" class="custom-input">
                             </div>
                             <div class="select-option">
                                 <label>Số lượng trẻ em:</label>
-                                <select id="room">
-                                    <option value="1">1 Children</option>
-                                    <option value="2">2 Children</option>
-                                    <option value="3">3 Children</option>
-                                </select>
+                                <input type="text" name="sl_tre_em"class="custom-input">
                             </div>
-                            <button type="submit">Kiểm tra</button>
+                            <button type="submit" name="kiem_tra">Kiểm tra</button>
                         </form>
                     </div>
                 </div>
@@ -84,15 +110,14 @@
                 <div class="col-lg-6">
                     <div class="about-text">
                         <div class="section-title">
-                            <span>About Us</span>
-                            <h2>Intercontinental LA <br />Westlake Hotel</h2>
+                            <span>Về chúng tôi</span>
+                            <h2>NiKa Hotel</h2>
                         </div>
-                        <p class="f-para">Nika.com is a leading online accommodation site. We’re passionate about
-                            travel. Every day, we inspire and reach millions of travelers across 90 local websites in 41
-                            languages.</p>
-                        <p class="s-para">So when it comes to booking the perfect hotel, vacation rental, resort,
-                            apartment, guest house, or tree house, we’ve got you covered.</p>
-                        <a href="#" class="primary-btn about-btn">Read More</a>
+                        <p class="f-para">Nika.com là trang web lưu trú trực tuyến hàng đầu.
+                            Chúng tôi đam mê du lịch. Mỗi ngày, chúng tôi truyền cảm hứng
+                            và tiếp cận hàng triệu du khách trên 90 trang web địa phương bằng 41 ngôn ngữ.</p>
+                        <p class="s-para">Vì vậy, khi nói đến việc đặt phòng khách sạn, nhà nghỉ dưỡng, khu nghỉ dưỡng, căn hộ, nhà khách hoặc nhà trên cây hoàn hảo,
+                            chúng tôi sẽ giúp bạn.</p>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -174,7 +199,7 @@
                                             </tbody>
                                         </table>
                                         <div class='d-flex justify-content-center align-items-center'>
-                                            <a href='#' class='btn btn-success me-3'>Đặt ngay</a>
+                                            <a href='booking.php?id={$row['ma_phong']}' class='btn me-3 shadow-none' style='background-color: #dfa974; color: white'>Đặt phòng</a>
                                             <a href='room_detail.php?id={$row['ma_phong']}' class='primary-btn'>Chi tiết</a>
                                         </div>
                                     </div>
@@ -189,61 +214,6 @@
         </div>
     </section>
     <!-- Home Room Section End -->
-
-    <!-- Testimonial Section Begin -->
-    <section class="testimonial-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title">
-                        <span>Bình luận</span>
-                        <h2>Những gì khách hàng nói?</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2">
-                    <div class="testimonial-slider owl-carousel">
-                        <div class="ts-item">
-                            <p>After a construction project took longer than expected, my husband, my daughter and I
-                                needed a place to stay for a few nights. As a Chicago resident, we know a lot about our
-                                city, neighborhood and the types of housing options available and absolutely love our
-                                vacation at Sona Hotel.</p>
-                            <div class="ti-author">
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
-                                </div>
-                                <h5> - Alexander Vasquez</h5>
-                            </div>
-                            <img src="Public/img/testimonial-logo.png" alt="">
-                        </div>
-                        <div class="ts-item">
-                            <p>After a construction project took longer than expected, my husband, my daughter and I
-                                needed a place to stay for a few nights. As a Chicago resident, we know a lot about our
-                                city, neighborhood and the types of housing options available and absolutely love our
-                                vacation at Sona Hotel.</p>
-                            <div class="ti-author">
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
-                                </div>
-                                <h5> - Alexander Vasquez</h5>
-                            </div>
-                            <img src="Public/img/testimonial-logo.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Testimonial Section End -->
     <script>
 
     </script>

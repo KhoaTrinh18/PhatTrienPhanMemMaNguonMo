@@ -190,16 +190,16 @@
                         } else {
                             $features = filteration($_POST['dacdiem']);
                             $services = filteration($_POST['dichvu']);
-                            if(!is_numeric($form_data['dien_tich'])){
-                                $_SESSION['error'] = "Diện tích phải là 1 số!";
-                            } else if(!filter_var($form_data['gia'], FILTER_VALIDATE_INT)){
-                                $_SESSION['error'] = "Giá phải là 1 số nguyên!";
-                            } else if(!filter_var($form_data['so_luong'], FILTER_VALIDATE_INT)){
-                                $_SESSION['error'] = "Số lượng phải là 1 số nguyên!";
-                            } else if(!filter_var($form_data['sl_nguoi_lon'], FILTER_VALIDATE_INT)){
-                                $_SESSION['error'] = "Số lượng người lớn phải là 1 số nguyên!";
-                            } else if(!filter_var($form_data['sl_tre_em'], FILTER_VALIDATE_INT)){
-                                $_SESSION['error'] = "Số lượng trẻ em phải là 1 số nguyên!";
+                            if(!is_numeric($form_data['dien_tich']) || $form_data['dien_tich'] < 1){
+                                $_SESSION['error'] = "Diện tích phải là 1 số > 0 !";
+                            } else if(!filter_var($form_data['gia'], FILTER_VALIDATE_INT) || $form_data['gia'] < 1){
+                                $_SESSION['error'] = "Giá phải là 1 số nguyên > 0 !";
+                            } else if(!filter_var($form_data['so_luong'], FILTER_VALIDATE_INT) || $form_data['so_luong'] < 0){
+                                $_SESSION['error'] = "Số lượng phải là 1 số nguyên >= 0 !";
+                            } else if(!filter_var($form_data['sl_nguoi_lon'], FILTER_VALIDATE_INT) || $form_data['sl_nguoi_lon'] < 1){
+                                $_SESSION['error'] = "Số lượng người lớn phải là 1 số nguyên > 0 !";
+                            } else if(!filter_var($form_data['sl_tre_em'], FILTER_VALIDATE_INT) || $form_data['sl_tre_em'] < 0){
+                                $_SESSION['error'] = "Số lượng trẻ em phải là 1 số nguyên >= 0 !";
                             } else {
                                 $result = select("SELECT * FROM phong WHERE `ma_phong` = ?", [$form_data['ma_phong']], 'i');
                                 $row = mysqli_fetch_assoc($result);
@@ -411,9 +411,9 @@
                                 $i = 1;
                                 while ($row = mysqli_fetch_assoc($data)) {
                                     if($row['trang_thai'] == 1){
-                                        $status = "<a href='?ma_phong={$row['ma_phong']}' class='btn btn-dark btn-sm shadow-none'>active</a>";
+                                        $status = "<a href='?ma_phong={$row['ma_phong']}' class='btn btn-dark btn-sm shadow-none'>Hoạt động</a>";
                                     } else {
-                                        $status = "<a href='?ma_phong={$row['ma_phong']}' class='btn btn-warning btn-sm shadow-none'>inactive</a>";
+                                        $status = "<a href='?ma_phong={$row['ma_phong']}' class='btn btn-warning btn-sm shadow-none'>Bảo trì</a>";
                                     }
                                     $values = array($row['ma_phong']);
                                     $res_fea = selectAll('dacdiem');

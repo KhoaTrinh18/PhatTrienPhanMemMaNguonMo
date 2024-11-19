@@ -288,7 +288,7 @@
                                         <div class="modal-body">
                                             <div class="mb-3">
                                                 <label class="form-label">Tên đặc điểm<span class="text-danger">*</span></label>
-                                                <input type="text" name="ten_dacdiem" class="form-control shadow-none">
+                                                <input type="text" name="ten_dacdiem" class="form-control shadow-none" value="<?php if(isset($form_data['ten_dacdiem'])) echo $form_data['ten_dacdiem']?>">
                                             </div>
                                             <div class="d-flex align-items-center justify-content-end">
                                                 <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">Đóng</button>

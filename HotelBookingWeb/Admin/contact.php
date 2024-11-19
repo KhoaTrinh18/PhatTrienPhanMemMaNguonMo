@@ -34,6 +34,13 @@
                         if(isset($_GET['kiemtra_all'])){
                             $query = "UPDATE lienhe SET `kiem_tra` = ?";
                             $values = array(1);
+                            $lienhes = select("SELECT * FROM lienhe WHERE kiem_tra = ?", [0], "i");
+                            while ($row = mysqli_fetch_assoc($lienhes)) {
+                                if(sendMail($row['email'], $row['ten_kh'], "Phản hồi liên hệ", "Chúng tôi đã thấy phản hồi của bạn! Cảm ơn bạn đã liên hệ chúng tôi") == 0){
+                                    $_SESSION['error'] = "Có lỗi xảy ra!";
+                                    return;
+                                }
+                            }
                             $result = update($query, $values, "i");
                             if($result){
                                 $_SESSION['success'] = "Đánh dấu đã kiểm tra toàn bộ thành công!";
@@ -50,7 +57,8 @@
                             $query = "UPDATE lienhe SET `kiem_tra` = ? WHERE ma_lienhe = ?";
                             $values = array(1, $form_data['ma_lienhe']);
                             $result = update($query, $values, "ii");
-                            if($result){
+                            $sendMail = sendMail($form_data["email"], $form_data["ten_kh"], "Phản hồi liên hệ", "Chúng tôi đã thấy phản hồi của bạn! Cảm ơn bạn đã liên hệ chúng tôi");
+                            if($result && $sendMail == 1){
                                 $_SESSION['success'] = "Đánh dấu đã kiểm tra thành công!";
                             }else{
                                 $_SESSION['error'] = "Có lỗi xảy ra!";
@@ -84,6 +92,10 @@
                             header("Location: contact.php");
                             exit;
                         }
+
+                        if(isset($_POST['send'])){
+                            sendMail();
+                        }
                         ob_end_flush();
                     ?>
                     <div class="card text-black">
@@ -114,11 +126,6 @@
                                         $data = mysqli_query($conn, $query);
                                         $i = 1;
                                         while($row = mysqli_fetch_assoc($data)){
-                                            $checked = '';
-                                            if($row['kiem_tra'] != 1){
-                                                $checked = "<a href='?doc={$row['ma_lienhe']}' class='fa-2x text-success mr-3'><i class='mdi mdi-check'></i></a>";
-                                            }
-                                            $checked .= "";
                                             echo "<tr>
                                                     <td>$i</td>
                                                     <td>{$row['ten_kh']}</td>
@@ -150,11 +157,11 @@
                                                                                 <div class='mb-3'>
                                                                                     <label class='form-label'>Tên khách hàng</label>
                                                                                     <input type='hidden' name='ma_lienhe' value='{$row['ma_lienhe']}'>
-                                                                                    <input type='text' class='form-control shadow-none' value='{$row['ten_kh']}' readonly>
+                                                                                    <input type='text' name='ten_kh' class='form-control shadow-none' value='{$row['ten_kh']}' readonly>
                                                                                 </div>
                                                                                 <div class='mb-3'>
                                                                                     <label class='form-label'>Email</label>
-                                                                                    <input type='text' class='form-control shadow-none' value='{$row['email']}' readonly>                                                                                
+                                                                                    <input type='text' name='email' class='form-control shadow-none' value='{$row['email']}' readonly>                                                                                
                                                                                 </div>
                                                                                  <div class='mb-3'>
                                                                                     <label class='form-label'>Ngày</label>

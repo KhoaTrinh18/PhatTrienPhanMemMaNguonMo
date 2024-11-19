@@ -15,14 +15,15 @@
 <body>
     <!-- Header -->
     <?php require ('Inc/header.php'); ?>
-    <div style="margin-top: 92px">
     <?php
         $row = [];
         $path = ROOMS_IMG_PATH;
         $feature = "";
         $service = "";
+        $ma_phong= 0;
         if(isset($_GET['id'])){
             $form_data = filteration($_GET);
+            $ma_phong = $form_data['id'];
             $result = select("SELECT * FROM phong WHERE ma_phong = ?", [$form_data['id']], 'i');
             $row = mysqli_fetch_assoc($result);
             //Feature
@@ -40,12 +41,11 @@
             }
             $service = rtrim($service, ", ");
         }
-        ?>
-    </div>
-    <?php require('Inc/login_register.php'); ?>
+    ?>
     <!-- Room Details Section Begin -->
     <section class="room-details-section spad" style="margin-top: 92px">
         <div class="container">
+            <?php require('Inc/login_register.php'); ?>
             <div class="breadcrumb-section">
                 <div class="container">
                     <div class="row">
@@ -97,14 +97,11 @@
                                 </tbody>
                             </table>
                             <div class="rd-text">
-                                <p class="f-para m-0">Motorhome or Trailer that is the question for you. Here are some of the
-                                    advantages and disadvantages of both, so you will be confident when purchasing an RV.
-                                    When comparing Rvs, a motorhome or a travel trailer, should you buy a motorhome or fifth
-                                    wheeler?</p>
+                                <p class="f-para m-0"><?php echo $row['mo_ta']?></p>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="btn btn-success mt-4 w-100">Book Now</a>
+                    <?php echo "<a href=\"booking.php?id={$row['ma_phong']}\" class=\"btn mt-4 w-100 shadow-none\" style=\"background-color: #dfa974; color: white\">Đặt phòng</a>"; ?>
                 </div>
             </div
 

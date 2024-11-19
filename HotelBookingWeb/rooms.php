@@ -22,12 +22,15 @@
     <!-- Header -->
     <?php
         require ('Inc/header.php');
-        require('Inc/login_register.php');
     ?>
 
     <!-- Rooms Section Begin -->
     <section class="rooms-section spad" style="margin-top: 92px">
         <div class="container">
+            <?php
+                require('Inc/login_register.php');
+
+            ?>
             <div class="breadcrumb-section">
                 <div class="container">
                     <div class="row">
@@ -53,7 +56,7 @@
                     }
                     //vị trí của mẩu tin đầu tiên trên mỗi trang
                     $offset = ($_GET['page'] - 1) * $rowsPerPage;
-                    $sql = 'SELECT * FROM phong WHERE trang_thai = 1 LIMIT '.$offset.','.$rowsPerPage;
+                    $sql = 'SELECT * FROM phong WHERE trang_thai = 1 ORDER BY ma_phong DESC LIMIT '.$offset.','.$rowsPerPage;
 
                     $result = mysqli_query($conn, $sql);
                     $path = ROOMS_IMG_PATH;
@@ -107,7 +110,7 @@
                                             </tbody>
                                         </table>
                                         <div class='d-flex justify-content-center align-items-center'>
-                                            <a href='#' class='btn btn-success me-3'>Đặt ngay</a>
+                                            <a href='booking.php?id={$row['ma_phong']}' class='btn me-3 shadow-none' style='background-color: #dfa974; color: white'>Đặt phòng</a>
                                             <a href='room_detail.php?id={$row['ma_phong']}' class='primary-btn'>Chi tiết</a>
                                         </div>       
                                     </div>

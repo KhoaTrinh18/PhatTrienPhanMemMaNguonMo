@@ -72,6 +72,8 @@
                         $_SESSION['error'] = "Tên tài khoản đã tồn tại!";
                     } else if(empty($form_data['mat_khau'])){
                         $_SESSION['error'] = "Mật khẩu không được để trống!";
+                    } else if(!preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $form_data['mat_khau'])) {
+                        $_SESSION['error'] = "Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự đặc biệt, 1 số và 1 chữ hoa!";
                     } else if($form_data['xacnhan_mk'] != $form_data['mat_khau']){
                         $_SESSION['error'] = "Mật khẩu xác nhận không trùng với mật khẩu!";
                     } else {

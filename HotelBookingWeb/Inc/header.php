@@ -190,6 +190,24 @@
                     link.parentElement.classList.add("active");
                 }
             }
+
+            if (currentUrl.includes("dexuat.php")) {
+                if (link.getAttribute("href").includes("rooms.php")) {
+                    link.parentElement.classList.add("active");
+                }
+            }
+
+            if (currentUrl.includes("booking.php")) {
+                if (link.getAttribute("href").includes("rooms.php")) {
+                    link.parentElement.classList.add("active");
+                }
+            }
+
+            if (currentUrl.includes("booking_success.php")) {
+                if (link.getAttribute("href").includes("rooms.php")) {
+                    link.parentElement.classList.add("active");
+                }
+            }
         });
     });
 </script>

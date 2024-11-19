@@ -49,4 +49,16 @@
         flex-grow: 1; /* Cho phép bảng có chiều cao tự do */
         margin-top: auto; /* Đảm bảo table ở phía dưới cùng */
     }
+
+    .custom-input{
+        width: 100%;
+        height: 50px;
+        border: 1px solid #ebebeb;
+        border-radius: 2px;
+        font-size: 16px;
+        color: #19191a;
+        text-transform: uppercase;
+        font-weight: 500;
+        padding-left: 20px;
+    }
 </style>

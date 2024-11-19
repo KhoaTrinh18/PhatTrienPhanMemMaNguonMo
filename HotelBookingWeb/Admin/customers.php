@@ -137,25 +137,25 @@
                                                                         <div class='mb-3'>
                                                                             <label class='form-label'>Tên khách hàng</label>
                                                                             <input type='hidden' name='ma_lienhe' value='{$row['ma_kh']}'>
-                                                                            <input type='text' class='form-control shadow-none' value='{$row['ten_kh']}' readonly>
+                                                                            <input type='text' class='form-control shadow-none bg-white' value='{$row['ten_kh']}' readonly>
                                                                         </div>
                                                                         <div class='mb-3'>
                                                                             <label class='form-label'>Ngày sinh</label>
-                                                                            <input type='text' class='form-control shadow-none' value='{$row['ngay_sinh']}' readonly>                                                                                
+                                                                            <input type='text' class='form-control shadow-none bg-white' value='{$row['ngay_sinh']}' readonly>                                                                                
                                                                         </div>
                                                                          <div class='mb-3'>
                                                                             <label class='form-label'>Email</label>
-                                                                            <input type='text' class='form-control shadow-none' value='{$row['email']}' readonly>                                                                                
+                                                                            <input type='text' class='form-control shadow-none bg-white' value='{$row['email']}' readonly>                                                                                
                                                                          </div>
                                                                     </div>
                                                                     <div class='col-md-6'>
                                                                         <div class='mb-3'>
                                                                             <label class='form-label'>Số điện thoại</label>
-                                                                            <input type='text' class='form-control shadow-none' value='{$row['so_dien_thoai']}' readonly>
+                                                                            <input type='text' class='form-control shadow-none bg-white' value='{$row['so_dien_thoai']}' readonly>
                                                                         </div>
                                                                         <div class='mb-3'>
                                                                             <label class='form-label'>Địa chỉ</label>
-                                                                            <textarea class='form-control shadow-none' rows='5' readonly>{$row['dia_chi']}</textarea>
+                                                                            <textarea class='form-control shadow-none bg-white' rows='5' readonly>{$row['dia_chi']}</textarea>
                                                                         </div>
                                                                     </div>
                                                                     <div class='mb-3'>

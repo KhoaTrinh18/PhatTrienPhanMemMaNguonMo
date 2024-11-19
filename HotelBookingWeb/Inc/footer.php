@@ -17,18 +17,18 @@
                 </div>
                 <div class="col-lg-3 offset-lg-1">
                     <div class="ft-contact">
-                        <h6>Link</h6>
+                        <h6>Danh mục</h6>
                         <ul>
-                            <li><a class="text-decoration-none color" href="./index.php">Home</a></li>
-                            <li><a class="text-decoration-none color" href="./rooms.php">Rooms</a></li>
-                            <li><a class="text-decoration-none color" href="./services.php">Services</a></li>
-                            <li><a class="text-decoration-none color" href="./contact.php">Contact</a></li>
+                            <li><a class="text-decoration-none color" href="./index.php">Trang chủ</a></li>
+                            <li><a class="text-decoration-none color" href="./rooms.php">Phòng</a></li>
+                            <li><a class="text-decoration-none color" href="./services.php">Dịch vụ</a></li>
+                            <li><a class="text-decoration-none color" href="./contact.php">Liên hệ</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-3 offset-lg-1">
                     <div class="ft-contact">
-                        <h6>Contact Us</h6>
+                        <h6>Liên hệ</h6>
                         <ul>
                             <li>(+84) 0368410685</li>
                             <li>trinhkhoa1811@gmail.com</li>
