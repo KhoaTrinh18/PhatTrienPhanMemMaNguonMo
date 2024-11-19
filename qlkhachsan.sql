@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2024 at 07:13 AM
+-- Generation Time: Nov 19, 2024 at 03:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,33 @@ CREATE TABLE `dacdiem` (
 INSERT INTO `dacdiem` (`ma_dacdiem`, `ten_dacdiem`) VALUES
 (58, 'Phòng tắm'),
 (60, 'Bếp'),
-(65, 'Phòng ngủ');
+(65, 'Phòng ngủ'),
+(69, 'Ghế sofa'),
+(70, 'Ban công');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `datphong`
+--
+
+CREATE TABLE `datphong` (
+  `ma_dp` varchar(14) NOT NULL,
+  `ma_kh` int(11) NOT NULL,
+  `ngay_np` varchar(50) NOT NULL,
+  `ngay_tp` varchar(50) NOT NULL,
+  `tong_gia` int(11) NOT NULL,
+  `ma_nv` int(11) DEFAULT NULL,
+  `ngay_xac_nhan` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `datphong`
+--
+
+INSERT INTO `datphong` (`ma_dp`, `ma_kh`, `ngay_np`, `ngay_tp`, `tong_gia`, `ma_nv`, `ngay_xac_nhan`) VALUES
+('DP202411196F', 4, '2024-11-21', '2024-11-22', 560000, 13, '2024-11-19'),
+('DP20241119F9', 4, '2024-11-20', '2024-11-22', 1120000, 13, '2024-11-19');
 
 -- --------------------------------------------------------
 
@@ -59,10 +85,12 @@ CREATE TABLE `dichvu` (
 --
 
 INSERT INTO `dichvu` (`ma_dichvu`, `ten_dichvu`, `anh_dichvu`, `mo_ta`) VALUES
-(53, 'Quầy bar', 'IMG_41148.png', 'abc'),
-(54, 'Nhà hàng', 'IMG_42327.png', 'abc'),
-(55, 'Trông trẻ', 'IMG_34947.png', 'abc'),
-(56, 'Giặt ủi', 'IMG_35379.png', 'abc');
+(53, 'Quầy bar', 'IMG_41148.png', 'Dịch vụ cao cấp do khách sạn cung cấp khi quý khách ở đây. Những dịch vụ này sẽ được cấp tùy theo phòng mà quý khách ở'),
+(54, 'Nhà hàng', 'IMG_42327.png', 'Dịch vụ cao cấp do khách sạn cung cấp khi quý khách ở đây. Những dịch vụ này sẽ được cấp tùy theo phòng mà quý khách ở'),
+(55, 'Trông trẻ', 'IMG_34947.png', 'Dịch vụ cao cấp do khách sạn cung cấp khi quý khách ở đây. Những dịch vụ này sẽ được cấp tùy theo phòng mà quý khách ở'),
+(56, 'Giặt ủi', 'IMG_35379.png', 'Dịch vụ cao cấp do khách sạn cung cấp khi quý khách ở đây. Những dịch vụ này sẽ được cấp tùy theo phòng mà quý khách ở'),
+(57, 'Thuê xe', 'IMG_71092.png', 'Dịch vụ cao cấp do khách sạn cung cấp khi quý khách ở đây. Những dịch vụ này sẽ được cấp tùy theo phòng mà quý khách ở\r\n'),
+(58, 'Hướng dẫn du lịch', 'IMG_90763.png', 'Dịch vụ cao cấp do khách sạn cung cấp khi quý khách ở đây. Những dịch vụ này sẽ được cấp tùy theo phòng mà quý khách ở');
 
 -- --------------------------------------------------------
 
@@ -85,7 +113,7 @@ CREATE TABLE `khachhang` (
 --
 
 INSERT INTO `khachhang` (`ma_kh`, `ten_kh`, `ngay_sinh`, `email`, `so_dien_thoai`, `dia_chi`, `anh_kh`) VALUES
-(4, 'Tuấn', '2003-11-23', 'tuan1234@gmail.com', '0232932332', 'Nha Trang', 'IMG_93623.jpg');
+(4, 'Trần Văn Tuấn', '2003-11-23', 'khoa.td.63cntt@ntu.edu.vn', '0232932332', 'Nha Trang', 'IMG_93623.jpg');
 
 -- --------------------------------------------------------
 
@@ -102,15 +130,6 @@ CREATE TABLE `lienhe` (
   `ngay` date NOT NULL DEFAULT current_timestamp(),
   `kiem_tra` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `lienhe`
---
-
-INSERT INTO `lienhe` (`ma_lienhe`, `ten_kh`, `email`, `tieu_de`, `noi_dung`, `ngay`, `kiem_tra`) VALUES
-(63, 'Khoa', 'trinhkhoa1811@gmail.com', '', 'ádss', '2024-11-11', 1),
-(64, 'Khoa', 'trinhkhoa1811@gmail.com', '', 'ádd', '2024-11-11', 1),
-(65, 'Khoa', 'trinhkhoa1811@gmail.com', 'Hello', 'ádasd', '2024-11-12', 0);
 
 -- --------------------------------------------------------
 
@@ -133,9 +152,8 @@ CREATE TABLE `nhanvien` (
 --
 
 INSERT INTO `nhanvien` (`ma_nv`, `ten_nv`, `ngay_sinh`, `email`, `so_dien_thoai`, `dia_chi`, `anh_nv`) VALUES
-(9, 'Tùng', '2003-03-21', 'tung1234@gmail.com', '0356728190', 'Nha Trang', 'IMG_92213.jpg'),
-(10, 'Khoa', '2003-11-18', 'khoa123@gmail.com', '0368410685', 'Nha Trang', 'IMG_37837.jpg'),
-(11, 'Thành', '2002-11-18', 'thanh1234@gmail.com', '0263721233', 'Nha Trang', 'IMG_51218.jpg');
+(12, 'Trịnh Đăng Duy', '2003-07-20', 'dangduy7920@gmail.com', '0393147920', 'Nha Trang', 'IMG_65487.jpg'),
+(13, 'Trần Thị Thảo', '2003-02-12', 'thaothi1234@gmail.com', '0253312345', 'Nha Trang', 'IMG_40095.jpg');
 
 -- --------------------------------------------------------
 
@@ -161,13 +179,12 @@ CREATE TABLE `phong` (
 --
 
 INSERT INTO `phong` (`ma_phong`, `ten_phong`, `dien_tich`, `gia`, `so_luong`, `sl_nguoi_lon`, `sl_tre_em`, `anh_phong`, `mo_ta`, `trang_thai`) VALUES
-(50, 'Phòng đôi', 12, 600000, 2, 4, 2, 'IMG_71345.jpg', 'abc', 1),
-(51, 'Phòng đôi', 12, 700000, 3, 4, 2, 'IMG_41861.jpg', 'abc', 1),
-(52, 'Phòng đôi', 12, 700000, 3, 4, 2, 'IMG_40570.jpg', 'abc', 1),
-(53, 'Phòng đôi', 12, 700000, 3, 4, 2, 'IMG_50156.jpg', 'abc', 1),
-(54, 'Phòng đôi', 12, 700000, 3, 4, 2, 'IMG_33972.jpg', 'abc', 1),
-(55, 'Phòng đôi', 12, 700000, 3, 4, 2, 'IMG_26662.jpg', 'abc', 1),
-(56, 'Phòng đôi', 12, 700000, 3, 4, 2, 'IMG_20104.jpg', 'abc', 1);
+(51, 'Phòng VIP', 40, 1000000, 2, 4, 2, 'IMG_53382.jpg', 'Phòng đẹp, sạch sẽ và đẩy đủ dịch vụ phù hợp với gia đình đang đi nghỉ dưỡng, du lịch ở Nha Trang', 1),
+(52, 'Phòng 3 giường đơn', 17, 630000, 4, 3, 2, 'IMG_28278.jpg', 'Phòng đẹp, sạch sẽ phù hợp với gia đình đang đi nghỉ dưỡng, du lịch ở Nha Trang', 1),
+(53, 'Phòng 2 giường đôi', 20, 700000, 4, 4, 2, 'IMG_63494.jpg', 'Phòng đẹp, sạch sẽ phù hợp với gia đình đang đi nghỉ dưỡng, du lịch ở Nha Trang', 1),
+(54, 'Phòng đôi 2 giường', 18, 560000, 5, 2, 2, 'IMG_72065.jpg', 'Phòng đôi 2 giường đẹp, sạch sẽ phù hợp với gia đình đang đi nghỉ dưỡng, du lịch ở Nha Trang', 1),
+(55, 'Phòng đơn', 10, 250000, 10, 1, 1, 'IMG_57878.jpg', 'Phòng đẹp, sạch sẽ phù hợp với cá đang đi nghỉ dưỡng, du lịch hay công tác ở Nha Trang', 1),
+(56, 'Phòng đôi 1 giường', 16, 400000, 15, 2, 1, 'IMG_74130.jpg', 'Phòng đẹp, sạch sẽ phù hợp với gia đình đang đi nghỉ dưỡng, du lịch ở Nha Trang', 1);
 
 -- --------------------------------------------------------
 
@@ -186,22 +203,47 @@ CREATE TABLE `phong_dacdiem` (
 --
 
 INSERT INTO `phong_dacdiem` (`ma_phong_dd`, `ma_phong`, `ma_dacdiem`) VALUES
-(127, 50, 58),
-(128, 50, 60),
-(129, 50, 65),
-(130, 51, 58),
-(131, 51, 60),
-(132, 51, 65),
-(133, 52, 58),
-(134, 52, 60),
-(135, 53, 58),
-(136, 54, 60),
-(137, 54, 65),
-(138, 55, 58),
-(139, 55, 60),
-(140, 55, 65),
-(141, 56, 60),
-(142, 56, 65);
+(206, 54, 58),
+(207, 54, 65),
+(208, 54, 69),
+(209, 53, 58),
+(210, 56, 58),
+(211, 56, 60),
+(212, 56, 65),
+(213, 55, 58),
+(214, 55, 65),
+(215, 55, 70),
+(216, 52, 58),
+(217, 52, 60),
+(218, 52, 69),
+(219, 52, 70),
+(225, 51, 58),
+(226, 51, 60),
+(227, 51, 65),
+(228, 51, 69),
+(229, 51, 70);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `phong_datphong`
+--
+
+CREATE TABLE `phong_datphong` (
+  `ma_phong_dp` int(11) NOT NULL,
+  `ma_phong` int(11) NOT NULL,
+  `ma_dp` varchar(14) NOT NULL,
+  `sl_phong` int(11) NOT NULL,
+  `trang_thai` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `phong_datphong`
+--
+
+INSERT INTO `phong_datphong` (`ma_phong_dp`, `ma_phong`, `ma_dp`, `sl_phong`, `trang_thai`) VALUES
+(40, 54, 'DP202411196F', 1, -1),
+(41, 54, 'DP20241119F9', 1, -1);
 
 -- --------------------------------------------------------
 
@@ -220,21 +262,24 @@ CREATE TABLE `phong_dichvu` (
 --
 
 INSERT INTO `phong_dichvu` (`ma_phong_dv`, `ma_phong`, `ma_dichvu`) VALUES
-(160, 50, 53),
-(161, 50, 54),
-(162, 50, 55),
-(163, 51, 54),
-(164, 51, 55),
-(165, 52, 53),
-(166, 52, 55),
-(167, 53, 53),
-(168, 53, 54),
-(169, 54, 54),
-(170, 54, 55),
-(171, 55, 53),
-(172, 55, 54),
-(173, 56, 55),
-(174, 56, 56);
+(231, 54, 53),
+(232, 54, 54),
+(233, 53, 53),
+(234, 53, 54),
+(235, 56, 54),
+(236, 56, 55),
+(237, 56, 56),
+(238, 55, 53),
+(239, 55, 54),
+(240, 52, 53),
+(241, 52, 54),
+(242, 52, 55),
+(249, 51, 53),
+(250, 51, 54),
+(251, 51, 55),
+(252, 51, 56),
+(253, 51, 57),
+(254, 51, 58);
 
 -- --------------------------------------------------------
 
@@ -255,10 +300,10 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`ma_tk`, `ten_tk`, `mat_khau`, `ma_nd`, `quyen`) VALUES
-(12, 'tung', '$2y$10$20lVkLzHUuxzCmgcutI6je1Ifh4q5xTduHVfg5feQ5EOvAZmwuhFu', 9, 'nhanvien'),
 (13, 'khoa', '$2y$10$ZnnuhXr38uiYlYqIkOjMzuV/WOJRNiGvCR3vCDUE7dpNZXMI01tRK', 10, 'admin'),
-(14, 'thanh', '$2y$10$T2zMLaAiMBDvxVDQUE0qtO552s8vZHZc4/7g.cBsSG20y1ix3WMzm', 11, 'nhanvien'),
-(15, 'tuan', '$2y$10$T1zngNpcYC0qA9bRT6LEOO0xGyEZ4oz95r2W65WZNvnOv1aY0KkeK', 4, 'khachhang');
+(15, 'tuan', '$2y$10$T1zngNpcYC0qA9bRT6LEOO0xGyEZ4oz95r2W65WZNvnOv1aY0KkeK', 4, 'khachhang'),
+(17, 'duy', '$2y$10$h1evCdDSbAyLi4Yx0GaN4OE8gQT2VqmwpimD7JSIq0O.AN04rep6e', 12, 'nhanvien'),
+(18, 'thao', '$2y$10$HR.9Qp5ukBiqvxbUf2fYYul7q15rfbBCmzvZXp8q.b5rPiv8l.Oti', 13, 'nhanvien');
 
 --
 -- Indexes for dumped tables
@@ -269,6 +314,13 @@ INSERT INTO `taikhoan` (`ma_tk`, `ten_tk`, `mat_khau`, `ma_nd`, `quyen`) VALUES
 --
 ALTER TABLE `dacdiem`
   ADD PRIMARY KEY (`ma_dacdiem`);
+
+--
+-- Indexes for table `datphong`
+--
+ALTER TABLE `datphong`
+  ADD PRIMARY KEY (`ma_dp`),
+  ADD KEY `ma_nv` (`ma_nv`);
 
 --
 -- Indexes for table `dichvu`
@@ -309,6 +361,14 @@ ALTER TABLE `phong_dacdiem`
   ADD KEY `rooms id` (`ma_phong`);
 
 --
+-- Indexes for table `phong_datphong`
+--
+ALTER TABLE `phong_datphong`
+  ADD PRIMARY KEY (`ma_phong_dp`),
+  ADD KEY `ma_dp` (`ma_dp`),
+  ADD KEY `ma_phong` (`ma_phong`);
+
+--
 -- Indexes for table `phong_dichvu`
 --
 ALTER TABLE `phong_dichvu`
@@ -330,13 +390,13 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT for table `dacdiem`
 --
 ALTER TABLE `dacdiem`
-  MODIFY `ma_dacdiem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `ma_dacdiem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `dichvu`
 --
 ALTER TABLE `dichvu`
-  MODIFY `ma_dichvu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `ma_dichvu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `khachhang`
@@ -348,13 +408,13 @@ ALTER TABLE `khachhang`
 -- AUTO_INCREMENT for table `lienhe`
 --
 ALTER TABLE `lienhe`
-  MODIFY `ma_lienhe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `ma_lienhe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `ma_nv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ma_nv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `phong`
@@ -366,23 +426,35 @@ ALTER TABLE `phong`
 -- AUTO_INCREMENT for table `phong_dacdiem`
 --
 ALTER TABLE `phong_dacdiem`
-  MODIFY `ma_phong_dd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
+  MODIFY `ma_phong_dd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=230;
+
+--
+-- AUTO_INCREMENT for table `phong_datphong`
+--
+ALTER TABLE `phong_datphong`
+  MODIFY `ma_phong_dp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `phong_dichvu`
 --
 ALTER TABLE `phong_dichvu`
-  MODIFY `ma_phong_dv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
+  MODIFY `ma_phong_dv` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=255;
 
 --
 -- AUTO_INCREMENT for table `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  MODIFY `ma_tk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `ma_tk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `datphong`
+--
+ALTER TABLE `datphong`
+  ADD CONSTRAINT `ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhanvien` (`ma_nv`) ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `phong_dacdiem`
@@ -390,6 +462,13 @@ ALTER TABLE `taikhoan`
 ALTER TABLE `phong_dacdiem`
   ADD CONSTRAINT `feature id` FOREIGN KEY (`ma_dacdiem`) REFERENCES `dacdiem` (`ma_dacdiem`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `rooms id` FOREIGN KEY (`ma_phong`) REFERENCES `phong` (`ma_phong`) ON UPDATE NO ACTION;
+
+--
+-- Constraints for table `phong_datphong`
+--
+ALTER TABLE `phong_datphong`
+  ADD CONSTRAINT `ma_dp` FOREIGN KEY (`ma_dp`) REFERENCES `datphong` (`ma_dp`) ON UPDATE NO ACTION,
+  ADD CONSTRAINT `ma_phong` FOREIGN KEY (`ma_phong`) REFERENCES `phong` (`ma_phong`) ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `phong_dichvu`
