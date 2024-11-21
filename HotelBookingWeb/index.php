@@ -16,43 +16,7 @@
     <!-- Header -->
     <?php require ('Inc/header.php')?>
     <div style="margin-top: 92px">
-        <?php
-            require('Inc/login_register.php');
-            if(isset($_POST['kiem_tra'])){
-                $form_data = filteration($_POST);
-                if(empty($form_data['ngay_np'])){
-                    $_SESSION['error'] = "Ngày nhận phòng không được để trống!";
-                } else if(empty($form_data['ngay_tp'])){
-                    $_SESSION['error'] = "Ngày trả phòng không được để trống!";
-                } else if(empty($form_data['sl_nguoi_lon'])){
-                    $_SESSION['error'] = "Số lượng người lớn không được để trống!";
-                } else if(empty($form_data['sl_tre_em'])){
-                    $_SESSION['error'] = "Số lượng trẻ em không được để trống!";
-                } else {
-                    $ngay_np = DateTime::createFromFormat("d F, Y", $form_data['ngay_np']);
-                    $ngay_tp = DateTime::createFromFormat("d F, Y", $form_data['ngay_tp']);
-                    $hom_nay = new DateTime();
-                    if ($ngay_np->format('y-m-d') <= $hom_nay->format('y-m-d')){
-                        $_SESSION['error'] = "Ngày nhận phòng phải sau ngày hôm nay!";
-                    } else if($ngay_np->format('y-m-d') >= $ngay_tp->format('y-m-d')) {
-                        $_SESSION['error'] = "Ngày trả phòng phải sau ngày nhận phòng!";
-                    } else if(!filter_var($form_data['sl_nguoi_lon'], FILTER_VALIDATE_INT) || $form_data['sl_nguoi_lon'] < 1){
-                        $_SESSION['error'] = "Số lượng người lớn phải là số nguyên > 0 !";
-                    } else if (!filter_var($form_data['sl_tre_em'], FILTER_VALIDATE_INT) || $form_data['sl_tre_em'] < 0){
-                        $_SESSION['error'] = "Số lượng trẻ em phải là số nguyên >= 0 !";
-                    } else {
-                        $_SESSION['ngay_np'] = $ngay_np;
-                        $_SESSION['ngay_tp'] = $ngay_tp;
-                        $_SESSION['sl_nguoi_lon'] = $form_data['sl_nguoi_lon'];
-                        $_SESSION['sl_tre_em'] = $form_data['sl_tre_em'];
-                        header("Location: dexuat.php");
-                        exit;
-                    }
-                }
-                header("Location: index.php");
-                exit;
-            }
-        ?>
+        <?php require('Inc/login_register.php'); ?>
     </div>
 
     <!-- Hero Section Begin -->
@@ -65,32 +29,6 @@
                         <p>Đây là trang web đặt phòng khách sạn tốt nhất, bao gồm các khuyến nghị
                             về du lịch quốc tế và tìm phòng khách sạn giá rẻ.</p>
                         <a href="#" class="primary-btn">Khám phá ngay</a>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-5 offset-xl-2 offset-lg-1">
-                    <div class="booking-form">
-                        <h3>Đặt phòng</h3>
-                        <form method="post">
-                            <div class="check-date">
-                                <label>Ngày nhận phòng:</label>
-                                <input type="text" name="ngay_np" class="date-input">
-                                <i class="icon_calendar"></i>
-                            </div>
-                            <div class="check-date">
-                                <label>Ngày trả phòng:</label>
-                                <input type="text" name="ngay_tp" class="date-input">
-                                <i class="icon_calendar"></i>
-                            </div>
-                            <div class="select-option">
-                                <label>Số lượng người lớn:</label>
-                                <input type="text" name="sl_nguoi_lon" class="custom-input">
-                            </div>
-                            <div class="select-option">
-                                <label>Số lượng trẻ em:</label>
-                                <input type="text" name="sl_tre_em"class="custom-input">
-                            </div>
-                            <button type="submit" name="kiem_tra">Kiểm tra</button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -208,7 +146,6 @@
                         $i++;
                     }
                     ?>
-
                 </div>
             </div>
         </div>

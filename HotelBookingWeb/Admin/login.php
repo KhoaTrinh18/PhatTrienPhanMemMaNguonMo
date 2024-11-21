@@ -46,7 +46,7 @@
                                     if(password_verify($form_data["mat_khau"], $row["mat_khau"])){
                                         $_SESSION['ma_tk_nv'] = $row['ma_tk'];
                                         $_SESSION['success'] = "Đăng nhập thành công!";
-                                        header('location: dashboard.php');
+                                        header('location: statistics.php?songay=7ngay');
                                         exit;
                                     }
                                     $_SESSION['error'] = "Tên đăng nhập hoặc mật khẩu không đúng!";

@@ -452,6 +452,17 @@
                                                         </label>   
                                                     </div>";
                                     }
+                                    $truyvan = "SELECT SUM(sl_phong) AS sl_phongdat FROM phong_datphong WHERE trang_thai = 1 AND ma_phong = {$row['ma_phong']} GROUP BY ma_phong";
+                                    $result = mysqli_query($conn, $truyvan);
+
+                                    if ($result) {
+                                        $sl_phong = mysqli_fetch_assoc($result);
+                                        $sl_phongdat = $sl_phong['sl_phongdat'] ?? 0;
+                                    } else {
+                                        $sl_phongdat = 0;
+                                    }
+                                    $sl_phongconlai = $row['so_luong'] - $sl_phongdat;
+
                                     echo "<tr>
                                             <td>$i</td>
                                             <td>{$row['ten_phong']}</td>             
@@ -461,7 +472,10 @@
                                                 <span class='badge rounded-pill bg-light text-dark' style='font-size: 14px;'>Trẻ em: {$row['sl_tre_em']}</span>
                                             </td>             
                                             <td>".number_format($row['gia'], 0, '', ',')." VNĐ</td>             
-                                            <td>{$row['so_luong']}</td>       
+                                            <td>
+                                                <span class='badge rounded-pill bg-light text-dark mb-2' style='font-size: 14px;'>Tổng: $sl_phongconlai</span><br>
+                                                <span class='badge rounded-pill bg-light text-dark' style='font-size: 14px;'>Đã đặt: $sl_phongdat</span>
+                                            </td>       
                                             <td>
                                                 <img src='$path{$row['anh_phong']}' class='rounded mx-auto d-block' width='100px'>
                                             </td>        

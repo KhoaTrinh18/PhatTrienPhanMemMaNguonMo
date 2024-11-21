@@ -1,9 +1,9 @@
 <nav class="sidebar sidebar-offcanvas position-fixed" style="left: 0px" id="sidebar">
     <ul class="nav">
         <li class="nav-item">
-            <a class="nav-link" href="dashboard.php">
-                <span class="icon-bg"><i class="mdi mdi-home menu-icon"></i></span>
-                <span class="menu-title">Trang chủ</span>
+            <a class="nav-link" href="statistics.php?songay=7ngay">
+                <span class="icon-bg"><i class="mdi mdi-chart-bar menu-icon"></i></span>
+                <span class="menu-title">Thống kê</span>
             </a>
         </li>
         <li class="nav-item">
@@ -49,7 +49,7 @@
             if($taikhoan['quyen'] == 'admin'){
                 echo "<li class='nav-item'>
                         <a class='nav-link' href='staff.php'>
-                            <span class='icon-bg'><i class='mdi mdi-cube menu-icon'></i></span>
+                            <span class='icon-bg'><i class='mdi mdi-human menu-icon'></i></span>
                             <span class='menu-title'>Nhân viên</span>
                         </a>
                     </li>";

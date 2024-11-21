@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2024 at 03:06 PM
+-- Generation Time: Nov 21, 2024 at 04:12 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,16 +56,19 @@ CREATE TABLE `datphong` (
   `ngay_tp` varchar(50) NOT NULL,
   `tong_gia` int(11) NOT NULL,
   `ma_nv` int(11) DEFAULT NULL,
-  `ngay_xac_nhan` varchar(50) NOT NULL
+  `ngay_xac_nhan` date NOT NULL,
+  `ngay_dat_phong` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `datphong`
 --
 
-INSERT INTO `datphong` (`ma_dp`, `ma_kh`, `ngay_np`, `ngay_tp`, `tong_gia`, `ma_nv`, `ngay_xac_nhan`) VALUES
-('DP202411196F', 4, '2024-11-21', '2024-11-22', 560000, 13, '2024-11-19'),
-('DP20241119F9', 4, '2024-11-20', '2024-11-22', 1120000, 13, '2024-11-19');
+INSERT INTO `datphong` (`ma_dp`, `ma_kh`, `ngay_np`, `ngay_tp`, `tong_gia`, `ma_nv`, `ngay_xac_nhan`, `ngay_dat_phong`) VALUES
+('DP2024112145', 4, '2024-11-22', '2024-11-25', 1200000, NULL, '0000-00-00', '2024-11-21'),
+('DP20241121A3', 4, '2024-11-22', '2024-11-23', 250000, 12, '2024-11-21', '2024-11-21'),
+('DP20241121B5', 4, '2024-11-22', '2024-11-24', 2520000, NULL, '0000-00-00', '2024-11-21'),
+('DP20241121DC', 4, '2024-11-22', '2024-11-24', 2240000, 12, '2024-11-21', '2024-11-21');
 
 -- --------------------------------------------------------
 
@@ -130,6 +133,13 @@ CREATE TABLE `lienhe` (
   `ngay` date NOT NULL DEFAULT current_timestamp(),
   `kiem_tra` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `lienhe`
+--
+
+INSERT INTO `lienhe` (`ma_lienhe`, `ten_kh`, `email`, `tieu_de`, `noi_dung`, `ngay`, `kiem_tra`) VALUES
+(71, 'Khoa', 'trinhkhoa1811@gmail.com', 'Hello', 'ádad', '2024-11-21', 0);
 
 -- --------------------------------------------------------
 
@@ -242,8 +252,10 @@ CREATE TABLE `phong_datphong` (
 --
 
 INSERT INTO `phong_datphong` (`ma_phong_dp`, `ma_phong`, `ma_dp`, `sl_phong`, `trang_thai`) VALUES
-(40, 54, 'DP202411196F', 1, -1),
-(41, 54, 'DP20241119F9', 1, -1);
+(45, 55, 'DP20241121A3', 1, 1),
+(46, 56, 'DP2024112145', 1, 0),
+(47, 54, 'DP20241121DC', 2, -1),
+(48, 52, 'DP20241121B5', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -408,7 +420,7 @@ ALTER TABLE `khachhang`
 -- AUTO_INCREMENT for table `lienhe`
 --
 ALTER TABLE `lienhe`
-  MODIFY `ma_lienhe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `ma_lienhe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `nhanvien`
@@ -432,7 +444,7 @@ ALTER TABLE `phong_dacdiem`
 -- AUTO_INCREMENT for table `phong_datphong`
 --
 ALTER TABLE `phong_datphong`
-  MODIFY `ma_phong_dp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ma_phong_dp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `phong_dichvu`
