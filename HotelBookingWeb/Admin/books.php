@@ -76,6 +76,7 @@
                             <tr>
                                 <th width="5%">#</th>
                                 <th>Mã đặt phòng</th>
+                                <th>Ngày đặt phòng</th>
                                 <th>Tên khách hàng</th>
                                 <th>Ngày nhận phòng</th>
                                 <th>Ngày trả phòng</th>
@@ -119,6 +120,7 @@
                                     echo "<tr>
                                             <td>$i</td>
                                             <td>{$row['ma_dp']}</td>             
+                                            <td>{$row['ngay_dat_phong']}</td>             
                                             <td>{$khachhang['ten_kh']}</td>                     
                                             <td>{$row['ngay_np']}</td>                     
                                             <td>{$row['ngay_tp']}</td>                     

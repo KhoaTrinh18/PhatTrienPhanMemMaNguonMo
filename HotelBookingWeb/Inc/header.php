@@ -179,7 +179,10 @@
         const navItems = document.querySelectorAll(".mainmenu ul li a");
 
         navItems.forEach(link => {
-            if (currentUrl.includes(link.getAttribute("href"))) {
+            // Nếu URL gốc trỏ đến thư mục chính
+            if (currentUrl.endsWith("/") && link.getAttribute("href").includes("index.php")) {
+                link.parentElement.classList.add("active");
+            } else if (currentUrl.includes(link.getAttribute("href"))) {
                 link.parentElement.classList.add("active");
             } else {
                 link.parentElement.classList.remove("active");
