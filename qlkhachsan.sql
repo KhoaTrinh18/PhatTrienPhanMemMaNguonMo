@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2024 at 04:12 AM
+-- Generation Time: Nov 25, 2024 at 03:53 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -68,7 +68,8 @@ INSERT INTO `datphong` (`ma_dp`, `ma_kh`, `ngay_np`, `ngay_tp`, `tong_gia`, `ma_
 ('DP2024112145', 4, '2024-11-22', '2024-11-25', 1200000, NULL, '0000-00-00', '2024-11-21'),
 ('DP20241121A3', 4, '2024-11-22', '2024-11-23', 250000, 12, '2024-11-21', '2024-11-21'),
 ('DP20241121B5', 4, '2024-11-22', '2024-11-24', 2520000, NULL, '0000-00-00', '2024-11-21'),
-('DP20241121DC', 4, '2024-11-22', '2024-11-24', 2240000, 12, '2024-11-21', '2024-11-21');
+('DP20241121DC', 4, '2024-11-22', '2024-11-24', 2240000, 12, '2024-11-21', '2024-11-21'),
+('DP202411259D', 4, '2024-11-27', '2024-11-28', 250000, NULL, '0000-00-00', '2024-11-25');
 
 -- --------------------------------------------------------
 
@@ -255,7 +256,8 @@ INSERT INTO `phong_datphong` (`ma_phong_dp`, `ma_phong`, `ma_dp`, `sl_phong`, `t
 (45, 55, 'DP20241121A3', 1, 1),
 (46, 56, 'DP2024112145', 1, 0),
 (47, 54, 'DP20241121DC', 2, -1),
-(48, 52, 'DP20241121B5', 1, 0);
+(48, 52, 'DP20241121B5', 1, 0),
+(49, 55, 'DP202411259D', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -332,7 +334,8 @@ ALTER TABLE `dacdiem`
 --
 ALTER TABLE `datphong`
   ADD PRIMARY KEY (`ma_dp`),
-  ADD KEY `ma_nv` (`ma_nv`);
+  ADD KEY `ma_nv` (`ma_nv`),
+  ADD KEY `ma_kh` (`ma_kh`);
 
 --
 -- Indexes for table `dichvu`
@@ -444,7 +447,7 @@ ALTER TABLE `phong_dacdiem`
 -- AUTO_INCREMENT for table `phong_datphong`
 --
 ALTER TABLE `phong_datphong`
-  MODIFY `ma_phong_dp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `ma_phong_dp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `phong_dichvu`
@@ -466,6 +469,7 @@ ALTER TABLE `taikhoan`
 -- Constraints for table `datphong`
 --
 ALTER TABLE `datphong`
+  ADD CONSTRAINT `ma_kh` FOREIGN KEY (`ma_kh`) REFERENCES `khachhang` (`ma_kh`) ON UPDATE NO ACTION,
   ADD CONSTRAINT `ma_nv` FOREIGN KEY (`ma_nv`) REFERENCES `nhanvien` (`ma_nv`) ON UPDATE NO ACTION;
 
 --
